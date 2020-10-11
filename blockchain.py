@@ -34,7 +34,7 @@ class Blockchain:  # defining our blockchain class
         while check_proof is False:
             temp_block=self.block_for_proof(new_proof,previous_hash)
             hash_operation = self.hash(temp_block)
-            if hash_operation[0]=='0':
+            if hash_operation[:2]=='00':
                 check_proof = True
                 
             else:
@@ -52,7 +52,15 @@ class Blockchain:  # defining our blockchain class
     def block_for_proof(self,proof,previous_hash):
         time_check=False
         if time_check== False:
+            self.get_time()
             time_check=True
+            temp_block={'index': len(self.chain)+1,
+                   'timestamp': self.time_is,
+                    'proof': proof,
+                   'previous_hash': previous_hash,
+                   'trasactions': self.trasactions
+                   }
+            
         else:
             temp_block={'index': len(self.chain)+1,
                    'timestamp': self.time_is,
@@ -60,10 +68,11 @@ class Blockchain:  # defining our blockchain class
                    'previous_hash': previous_hash,
                    'trasactions': self.trasactions
                    }
-            return temp_block
+        return temp_block
+ 
 
     def hash(self,block):
-        encoded_block=json.dumps(block, sort_keys=True).encode()
+        encoded_block=json.dumps(block, sort_keys=True).encode()   #use json.dumps for str during web
         return hashlib.sha256(encoded_block).hexdigest()
     
      
