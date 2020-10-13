@@ -1,7 +1,7 @@
 import datetime  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
-from uuid import uuid4  # generate pseudo random numers..
+
 from flask import Flask 
 
 
@@ -66,6 +66,8 @@ class Blockchain:  # defining our blockchain class
         encoded_block=json.dumps(block, sort_keys=True).encode()   #use json.dumps for str during web
         return hashlib.sha256(encoded_block).hexdigest()
     
+    
+    
      
     
    
@@ -103,6 +105,9 @@ def get_chain():
     response={'chain':blockchain.chain,
               'len':len(blockchain.chain)}
     return response, 200
+
+
+    
     
 app.run(host='0.0.0.0', port=5000)
 
