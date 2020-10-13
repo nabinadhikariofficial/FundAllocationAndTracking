@@ -1,7 +1,6 @@
 import datetime  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
-from uuid import uuid4  # generate pseudo random numers..
 from flask import Flask 
 
 
