@@ -1,8 +1,12 @@
 import datetime  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
+<<<<<<< HEAD
 # import requests  # for requesting among nodes for the json files
 from flask import Flask, request
+=======
+from flask import Flask 
+>>>>>>> 171d953375d8f8b784433b5fdf4bf3f3144197b5
 
 
 class Blockchain:  # defining our blockchain class
