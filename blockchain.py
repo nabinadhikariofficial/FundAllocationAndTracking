@@ -46,7 +46,6 @@ class Blockchain:  # defining our blockchain class
 
     def get_time(self):
         self.time_is = str(int(time.time()))
-        return 1
 
     def block_for_proof(self, proof, previous_hash):
         self.get_time()
@@ -90,9 +89,10 @@ class Blockchain:  # defining our blockchain class
         longest_chain = None
         max_length = len(self.chain)
         for node in network:
-            response = requests.get(f'http://{node}/get_chain')
+            response = requests.get(f"http://{node}/get_chain")
+            print(response)
             if response.status_code == 200:
-                length = response.json()['length']
+                length = response.json()['len']
                 chain = response.json()['chain']
                 if length > max_length and self.is_chain_valid(chain):
                     max_length = length

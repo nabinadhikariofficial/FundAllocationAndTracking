@@ -13,6 +13,7 @@ class Blockchain:  # defining our blockchain class
     def __init__(self):
         self.chain = []
         self.transactions = []
+        self.time_is = str(int(time.time()))
         # proof=1, for the genesis block.
         self.create_block(proof=1, previous_hash='0')
         self.nodes = set()  # creates nodes set for the given nodes connected in the network
@@ -20,7 +21,7 @@ class Blockchain:  # defining our blockchain class
     def create_block(self, proof, previous_hash):  # create a block
 
         block = {'index': len(self.chain)+1,
-                 'timestamp': str(int(time.time())),
+                 'timestamp': self.time_is,
                  'proof': proof,
                  'previous_hash': previous_hash,
                  'transactions': self.transactions}
@@ -31,17 +32,30 @@ class Blockchain:  # defining our blockchain class
     def get_previous_block(self):
         return self.chain[-1]
 
-    def proof_of_work(self, previous_proof):  # hasing function to find the nonce
+    def proof_of_work(self, previous_hash):  # hasing function to find the nonce
         new_proof = 1
         check_proof = False
         while check_proof is False:
-            hash_operation = hashlib.sha256(
-                str(new_proof**2 - previous_proof**2).encode()).hexdigest()
+            temp_block = self.block_for_proof(new_proof, previous_hash)
+            hash_operation = self.hash(temp_block)
             if hash_operation[:3] == '000':
                 check_proof = True
             else:
                 new_proof = new_proof+1
         return new_proof
+
+    def get_time(self):
+        self.time_is = str(int(time.time()))
+
+    def block_for_proof(self, proof, previous_hash):
+        self.get_time()
+        temp_block = {'index': len(self.chain)+1,
+                      'timestamp': self.time_is,
+                      'proof': proof,
+                      'previous_hash': previous_hash,
+                      'transactions': self.transactions
+                      }
+        return temp_block
 
     def hash(self, block):
         # use json.dumps for str during web
@@ -54,12 +68,6 @@ class Blockchain:  # defining our blockchain class
         while block_index < len(chain):
             block = chain[block_index]
             if block['previous_hash'] != self.hash(previous_block):
-                return False
-            previous_proof = previous_block['proof']
-            proof = block['proof']
-            hash_operation = hashlib.sha256(
-                str(proof**2 - previous_proof**2).encode()).hexdigest()
-            if hash_operation[:3] != '000':
                 return False
             previous_block = block
             block_index += 1
@@ -81,9 +89,10 @@ class Blockchain:  # defining our blockchain class
         longest_chain = None
         max_length = len(self.chain)
         for node in network:
-            response = requests.get(f'http://{node}/get_chain')
+            response = requests.get(f"http://{node}/get_chain")
+            print(response)
             if response.status_code == 200:
-                length = response.json()['length']
+                length = response.json()['len']
                 chain = response.json()['chain']
                 if length > max_length and self.is_chain_valid(chain):
                     max_length = length
@@ -110,9 +119,8 @@ blockchain = Blockchain()
 @app.route('/mine_block', methods=['GET'])
 def mine_block():
     previous_block = blockchain.get_previous_block()
-    previous_proof = previous_block['proof']
     previous_hash = blockchain.hash(previous_block)
-    proof = blockchain.proof_of_work(previous_proof)
+    proof = blockchain.proof_of_work(previous_hash)
 
     # award for mining block
     blockchain.add_transaction(sender=node_address, receiver='XYZ', amount=1)
@@ -197,4 +205,4 @@ def replace_chain():
 
 
 # Running the app
-app.run(host='127.0.0.1', port=5001)
+app.run(host='127.0.0.1', port=5000)
