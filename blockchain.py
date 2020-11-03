@@ -120,11 +120,9 @@ blockchain = Blockchain()
 def mine_block():
     previous_block = blockchain.get_previous_block()
     previous_hash = blockchain.hash(previous_block)
-    proof = blockchain.proof_of_work(previous_hash)
-
     # award for mining block
     blockchain.add_transaction(sender=node_address, receiver='XYZ', amount=1)
-
+    proof = blockchain.proof_of_work(previous_hash)
     block = blockchain.create_block(proof, previous_hash)
 
     response = {'message': "New block has been mined and added",
