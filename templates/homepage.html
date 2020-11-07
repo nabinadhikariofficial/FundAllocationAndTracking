@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Homepage{% endblock %}
+{% block content %}
+<div class="login-dark" style="background: linear-gradient(135deg, #172a74, #21a9af);background-color: #184e8e;">
+    <form method="post">
+        <h2 class="sr-only">Login Form</h2>
+        <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+        <div class="form-group">
+            <input class="form-control" type="email" id="email" name="email" placeholder="Email" />
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" id="password" name="password" placeholder="Password" />
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" id="login" type="submit">
+                Log In
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
