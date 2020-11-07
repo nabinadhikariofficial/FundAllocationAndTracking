@@ -3,44 +3,30 @@
 
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static',filename="css/nav.css")}}">
+    <link rel="stylesheet" href="{{url_for('static',filename="css/style.css")}}">
 </head>
 
-<body style="color: #ffffff;">
-    <nav class="navbar navbar-light navbar-expand-md" style="background-color: #000000;width: 983;">
-        <div class="container-fluid"><a class="navbar-brand" href="#" style="color: #ffffff;">Fund Allocation using
-                Blockchain</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span
-                    class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('homepage')}}"
-                            style="color: #ffffff;">Homepage</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{{url_for('homepage')}}"
-                            style="color: #ffffff;">Add Transaction</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('mine_block')}}"
-                            style="color: #ffffff;">Mine Block</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('homepage')}}"
-                            style="color: #ffffff;">View Transaction</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('homepage')}}"
-                            style="color: #ffffff;">Track Transaction</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<body class="margin">
+    <ul class="n1">
+        <li class="n2"><a href="{{url_for('homepage')}}">
+                <font class="f1"><b>Home</b></font>
+            </a></li>
+        <li class="n2"><a href="{{url_for('homepage')}}">
+                <font class="f1"><b>Add Transaction</b></font>
+            </a></li>
+        <li class="n2"><a href="{{url_for('homepage')}}">
+                <font class="f1"><b>Mine Block</b></font>
+            </a></li>
+        <li class="n2"><a href="{{url_for('homepage')}}">
+                <font class="f1"><b>View Transaction</b></font>
+            </a></li>
+        <li class="n2"><a href="{{url_for('homepage')}}">
+                <font class="f1"><b>Track Transaction</b></font>
+            </a></li>
+    </ul>
     {% block content %}
     {% endblock %}
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>
