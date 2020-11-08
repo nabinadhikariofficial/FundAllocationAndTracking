@@ -1,22 +1,22 @@
 .d1 {
-    position: absolute;
-    height: 65%;
-    right: 40%;
-    width: 25%;
-    top: 20%;
-    border: 2px outset red;
-    background-color: lightblue;
-    text-align: center;
+  position: absolute;
+  height: 65%;
+  right: 40%;
+  width: 25%;
+  top: 20%;
+  border: 2px outset red;
+  background-color: lightblue;
+  text-align: center;
 }
 .d2 {
-    position: absolute;
-    height: 75%;
-    right: 05%;
-    width: 90%;
-    top: 20%;
-    border: 2px outset red;
-    background-color: lightblue;
-    text-align: center;
+  position: absolute;
+  height: 75%;
+  right: 05%;
+  width: 90%;
+  top: 20%;
+  border: 2px outset red;
+  background-color: lightblue;
+  text-align: center;
 }
 .e {
   width: 100%;
@@ -35,7 +35,7 @@
   box-sizing: border-box;
 }
 .b1 {
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;

@@ -3,7 +3,8 @@
 
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{url_for('static',filename="css/nav.css")}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename="css/nav.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename="css/style.css") }}">
 </head>
 
 <body class="margin">
@@ -25,18 +26,6 @@
                     <font class="f1"><b>Track Transaction</b></font>
                 </a></li>
         </ul>
-    </div>
-    <div class="d1">
-        <div class="d2">
-            <form>
-                <label for="Email">Email:</label><br>
-                <input type="text" class="e" placeholder="Email"><br>
-                <label for="Password">Password:</label><br>
-                <input type="text" class="p" placeholder="Password"><br><br>
-                <input type="submit" class="b1" value="Login">
-            </form>
-
-        </div>
     </div>
     {% block content %}
     {% endblock %}
