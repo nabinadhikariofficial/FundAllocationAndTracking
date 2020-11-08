@@ -1,46 +1,65 @@
-.d1 {
+.login-box{
+  width: 30%;
+  height: 70%;
+  background:#000000;
+  color: #fff;
+  top: 60%;
+  left: 50%;
   position: absolute;
-  height: 65%;
-  right: 40%;
-  width: 25%;
-  top: 20%;
-  border: 2px outset red;
-  background-color: lightblue;
-  text-align: center;
+  transform: translate(-50%,-50%);
+  box-sizing: border-box;
+  padding-right: 2%;
+  padding-top: 5%;
+  padding-left: 2%;
 }
-.d2 {
+.avatar{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
   position: absolute;
-  height: 75%;
-  right: 05%;
-  width: 90%;
-  top: 20%;
-  border: 2px outset red;
-  background-color: lightblue;
+  top: -50px;
+  left: calc(50% - 50px);
+}
+h1{
+  margin: 0;
+   padding: 0 0 20px;
   text-align: center;
+  font-size: 22px;
 }
-.e {
+.login-box p{
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+.login-box input{
   width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  margin-bottom: 20px;
 }
-.p {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-.b1 {
-  background-color: #4caf50; /* Green */
+.login-box input[type="text"], input[type="password"]
+{
   border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  outline: none;
+  height: 40px;
+  color: #fff;
   font-size: 16px;
+}
+.login-box input[type="submit"]
+{
+  border: none;
+  outline: none;
+  width : 20%; 
+  height: 70%;
+  right: 50%;
+  background: #1c8adb;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 20px;
+}
+.login-box input[type="submit"]:hover
+{
+  cursor: pointer;
+  background: #39dc79;
+  color: #000;    
 }
