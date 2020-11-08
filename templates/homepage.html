@@ -1,15 +1,16 @@
 {% extends "layout.html" %}
 {% block title %}Homepage{% endblock %}
 {% block content %}
-<div class="d1">
-    <div class="d2">
-        <form>
-            <label for="Email">Email:</label><br>
-            <input type="text" class="e" placeholder="Email"><br>
-            <label for="Password">Password:</label><br>
-            <input type="text" class="p" placeholder="Password"><br><br>
-            <input type="submit" class="b1" value="Login">
-        </form>
-    </div>
-</div>
+<div class="login-box">
+    <img src="\static\img\avatar.png" class="avatar">
+        <h1>Login Here</h1>
+            <form>
+            <p>Email</p>
+            <input type="text" name="username" placeholder="Enter Username">
+            <p>Password</p>
+            <input type="password" name="password" placeholder="Enter Password">
+            <input type="submit" name="submit" value="Login"><br>
+            </form>
+        
+        </div>
 {% endblock %}
