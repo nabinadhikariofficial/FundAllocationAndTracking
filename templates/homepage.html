@@ -2,14 +2,17 @@
 {% block title %}Homepage{% endblock %}
 {% block content %}
 <div class="login-box">
-    <img src="\static\img\avatar.png" class="avatar">
+    <img src="\static\image\avatar.png" class="avatar">
         <h1>Login Here</h1>
             <form>
-            <p>Email</p>
-            <input type="text" name="username" placeholder="Enter Username">
-            <p>Password</p>
-            <input type="password" name="password" placeholder="Enter Password">
-            <input type="submit" name="submit" value="Login"><br>
+            <p class="ep">Email</p>
+            <input type="text" name="email" class="input input_password" placeholder="Enter Email">
+            <p class="ep">Password</p>
+            <input type="password" name="password" class="input input_password" placeholder="Enter Password">
+            <div class="center">
+                <input type="submit" name="submit" class="input submit" value="Login"><br>
+            </div>
+              
             </form>
         
         </div>

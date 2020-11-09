@@ -1,5 +1,21 @@
 {% extends "layout.html" %}
 {% block title %}Add Transaction{% endblock %}
 {% block content %}
-write code here
+    <div class="transaction_box">
+        <img src="\static\image\transaction.png" class="avatar">
+        <h1>Add Transaction</h1>
+            <form>
+            <p class="ep">Sender</p>
+            <input type="text" name="sender" class="input input_password" placeholder="Enter Sender Name">
+            <p class="ep">Receiver</p>
+            <input type="text" name="receiver" class="input input_password" placeholder="Enter Receiver Name">
+            <p class="ep">Amount</p>
+            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="amount" class="input input_password" placeholder="Enter Amount"/>
+            <div class="center">
+                <input type="submit" name="ass_transaction" class="input submit" value="Add Transaction"><br>
+            </div>
+              
+            </form>
+        
+        </div>
 {% endblock %}

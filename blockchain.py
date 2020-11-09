@@ -119,6 +119,9 @@ blockchain = Blockchain()
 def homepage():
     return render_template('homepage.html')  # running the html page
 
+@app.route('/add')
+def add():
+    return render_template('addtransaction.html')
 
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
