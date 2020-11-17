@@ -17,6 +17,7 @@ class Blockchain:  # defining our blockchain class
         # proof=1, for the genesis block.
         self.create_block(proof=1, previous_hash='0')
         self.nodes = set()  # creates nodes set for the given nodes connected in the network
+        self.count = 1
 
     def create_block(self, proof, previous_hash):  # create a block
 
@@ -124,7 +125,8 @@ def homepage():
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
     if request.method == 'GET':
-        return render_template("mineblock.html")
+        return render_template("mineblock.html", ), 200
+
     elif request.method == 'POST':
         previous_block = blockchain.get_previous_block()
         previous_hash = blockchain.hash(previous_block)
@@ -134,13 +136,19 @@ def mine_block():
         proof = blockchain.proof_of_work(previous_hash)
         block = blockchain.create_block(proof, previous_hash)
 
-        response = {'message': "New block has been mined and added",
-                    'index': block['index'],
-                    'timestamp': block['timestamp'],
-                    'proof': block['proof'],
-                    'previous_hash': block['previous_hash'],
-                    'transactions': block['transactions']}
-        return response, 200
+        resp = [{"message": "New block has been mined and added",
+                 "index": block['index'],
+                 "timestamp": block['timestamp'],
+                 "proof": block['proof'],
+                 "previous_hash": block['previous_hash']
+                 # 'transactions': block['transactions']
+                 }]
+
+        return render_template("mineblock.html", response=resp), 200
+
+
+# return render_template("mineblock.html", response=resp)
+# return response, 200
 
 # Getting the full Blockchain
 
@@ -148,9 +156,9 @@ def mine_block():
 @app.route('/get_chain', methods=['GET'])
 def get_chain():
 
-    response = {'chain': blockchain.chain,
-                'len': len(blockchain.chain)}
-    return response, 200
+    resp = [{"chain": blockchain.chain}]
+
+    return render_template('viewtransaction.html', response=resp[0])
 
 # Checking if the Blockchain is valid
 

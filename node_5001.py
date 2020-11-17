@@ -1,7 +1,7 @@
 import time  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
-from flask import Flask, request
+from flask import Flask, request, render_template
 import requests  # for requesting webpages
 from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
@@ -116,23 +116,31 @@ blockchain = Blockchain()
 # Mining a new block
 
 
-@app.route('/mine_block', methods=['GET'])
+@app.route('/')
+def homepage():
+    return render_template('homepage.html')  # running the html page
+
+
+@app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
-    previous_block = blockchain.get_previous_block()
-    previous_hash = blockchain.hash(previous_block)
-    # award for mining block
-    blockchain.add_transaction(sender=node_address, receiver='XYZ', amount=1)
-    proof = blockchain.proof_of_work(previous_hash)
+    if request.method == 'GET':
+        return render_template("mineblock.html")
+    elif request.method == 'POST':
+        previous_block = blockchain.get_previous_block()
+        previous_hash = blockchain.hash(previous_block)
+        # award for mining block
+        blockchain.add_transaction(
+            sender=node_address, receiver='XYZ', amount=1)
+        proof = blockchain.proof_of_work(previous_hash)
+        block = blockchain.create_block(proof, previous_hash)
 
-    block = blockchain.create_block(proof, previous_hash)
-
-    response = {'message': "New block has been mined and added",
-                'index': block['index'],
-                'timestamp': block['timestamp'],
-                'proof': block['proof'],
-                'previous_hash': block['previous_hash'],
-                'transactions': block['transactions']}
-    return response, 200
+        response = {'message': "New block has been mined and added",
+                    'index': block['index'],
+                    'timestamp': block['timestamp'],
+                    'proof': block['proof'],
+                    'previous_hash': block['previous_hash'],
+                    'transactions': block['transactions']}
+        return response, 200
 
 # Getting the full Blockchain
 
@@ -204,4 +212,5 @@ def replace_chain():
 
 
 # Running the app
-app.run(host='127.0.0.1', port=5001)
+if __name__ == "__main__":
+    app.run(host='127.0.0.1', port=5000, debug=True)

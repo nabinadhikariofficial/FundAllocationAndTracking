@@ -1,5 +1,71 @@
 {% extends "layout.html" %}
 {% block title %}View Transaction{% endblock %}
 {% block content %}
-write code here
+<style>
+  
+  .styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+  .styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #104aeb;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #077c4f;
+}
+
+
+</style>
+<div class="pageclass">
+<div class="table">
+  <table style="width: 100%; margin-top:50px" id="maintable" class="styled-table">
+    <thead>
+      <tr>
+      <th>Index</th>
+      <th>Time</th>
+      <th>Proof</th>
+      <th>Transaction</th>
+    </tr>
+    </thead>
+   <tbody>
+  {% for element in response.chain %}
+    <tr class="active-row">
+      <td>{{element.index}}</td>
+      <td>{{element.timestamp}}</td>
+      <td>{{element.proof}}</td>
+      <td>{{element.transactions}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+</div>
+</div>
+
+
+
+
+
+
 {% endblock %}

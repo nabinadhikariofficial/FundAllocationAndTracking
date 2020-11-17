@@ -1,7 +1,90 @@
+
 {% extends "layout.html" %}
-{% block title %}Mine BLock{% endblock %}
+{% block title %}
+Mine BLock{% endblock %}
 {% block content %}
-<form method="POST">
-    <button>Mine Block</button>
+<style>
+    h3{
+        color:white;
+        text-align: center;
+        }
+    .mineBlockButton{
+        margin-top:100px;
+        padding:20px;
+        background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+         border: 2px solid white;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius:24px;
+        }
+        .mineBlockButton:hover {
+            background-color: white;
+            background-image: none;
+            opacity:.5;
+            color:  #0d324d;
+            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.64), 0 17px 50px 0 rgba(0,0,0,0.29);
+            }
+        .minePage{
+        margin-top:24px;
+        background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+        height:38rem;
+    }
+    #demo{
+        text-align: center;
+        color: white;
+        font-size: larger;
+
+
+    }
+</style>
+<script>
+   
+     var showchage='<div id="demo">'+
+    '<h1> Congratulations! you just mined a block</h1>'+
+    '<h2> Enjoy your reward!</h2>'+
+    '<p >'+
+        '{% for x in response %}'+
+    'the message ={{ x.message }}'+
+    '<br >'+
+    'the index={{x.index}}<br >'+
+    'the proof ={{x.proof}}<br >'+
+    'the previous hash={{x.previous_hash}}<br >'+
+    'the timesta,p ={{x.timestamp}}<br >'+
+    '{% endfor %}'+ 
+    '</p>'+
+
+  
+    '</div>';
+    function whatshow(){
+        document.getElementById("changebelow").innerHTML=showchage;
+        
+        
+    }
+
+  
+  
+</script>
+
+<div  id="minepage" class="minePage">
+    <div id="changehere">
+    <h3 style="padding-top:13rem">
+        Just a click away from mining the next block.
+    </h3>
+<form method="POST" style="padding-left:36rem"  >
+  <button class="mineBlockButton" onclick="whatshow()" >Mine Block</button>
+  
 </form>
+<div id="changebelow">
+
+</div>
+</div>
+
+</div>
+
+
 {% endblock %}
