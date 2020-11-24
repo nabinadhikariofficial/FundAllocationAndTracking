@@ -5,16 +5,17 @@
     <div class="transaction_box">
         <img src="\static\img\transaction.png" class="avatar">
         <h1>Add Transaction</h1>
-            <form>
+        <form method="POST">
             <p class="ep">Sender</p>
             <input type="text" name="sender" class="input_email" placeholder="Enter Sender Name">
             <p class="ep">Receiver</p>
             <input type="text" name="receiver" class="input_email" placeholder="Enter Receiver Name">
             <p class="ep">Amount</p>
-            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="amount" class="input input_email" placeholder="Enter Amount"/>
-            <input type="submit" name="add_transaction" class="submit" value="Add Transaction">  
-            </form>
-        
-        </div>
+            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                name="amount" class="input input_email" placeholder="Enter Amount" />
+            <input type="submit" class="submit">
+        </form>
+        <h1>{{response}}</h1>
+    </div>
 </div>
 {% endblock %}

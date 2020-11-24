@@ -1,7 +1,7 @@
 import time  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
-from flask import Flask, request, render_template,jsonify
+from flask import Flask, request, render_template, jsonify
 import requests  # for requesting webpages
 from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
@@ -121,10 +121,6 @@ blockchain = Blockchain()
 def homepage():
     return render_template('homepage.html')  # running the html page
 
-@app.route('/add')
-def add():
-    return render_template('addtransaction.html')
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -132,20 +128,21 @@ def signup():
         username = request.form["Username"]
         password = request.form["Password"]
         email = request.form["Email"]
-        if  username and password and "@" in email and ".com" in email:
-                   with open('signup.json', 'a+') as f:
-                       json.dump(request.form, f)
-                       f.write("\n")
-                       return render_template('signup.html')
+        if username and password and "@" in email and ".com" in email:
+            with open('signup.json', 'a+') as f:
+                json.dump(request.form, f)
+                f.write("\n")
+                return render_template('signup.html')
         else:
-            return render_template('signup.html')  
+            return render_template('signup.html')
     else:
         return render_template('signup.html')
+
 
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
     if request.method == 'GET':
-        return render_template("mineblock.html", ), 200
+        return render_template("mineblock.html"), 200
 
     elif request.method == 'POST':
         previous_block = blockchain.get_previous_block()
@@ -165,10 +162,6 @@ def mine_block():
                  }]
 
         return render_template("mineblock.html", response=resp), 200
-
-
-# return render_template("mineblock.html", response=resp)
-# return response, 200
 
 # Getting the full Blockchain
 
@@ -196,16 +189,21 @@ def is_valid():
 # Adding a new transaction to the Blockchain
 
 
-@app.route('/add_transaction', methods=['POST'])
+@app.route('/add_transaction', methods=['POST', 'GET'])
 def add_transaction():
-    json = request.get_json()
-    transaction_keys = ['sender', 'receiver', 'amount']
-    if not all(key in json for key in transaction_keys):
-        return 'Some elements of the transaction are missing', 400
-    index = blockchain.add_transaction(
-        json['sender'], json['receiver'], json['amount'])
-    response = {'message': f'This transaction will be added to Block {index}'}
-    return response, 201
+    if request.method == "POST":
+        sender = request.form["sender"]
+        receiver = request.form["receiver"]
+        amount = request.form["amount"]
+        if (sender and receiver and amount):
+            index = blockchain.add_transaction(sender, receiver, amount)
+            res = f"This transaction will be added to Block {index}"
+            return render_template('addtransaction.html', response=res)
+        else:
+            res = "Some elements of the transaction are missing"
+            return render_template('addtransaction.html', response=res)
+    else:
+        return render_template('addtransaction.html', response="null")
 
 # Decentralizing our Blockchain
 
