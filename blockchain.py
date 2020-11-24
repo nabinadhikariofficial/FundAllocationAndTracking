@@ -1,7 +1,7 @@
 import time  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template,jsonify
 import requests  # for requesting webpages
 from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
@@ -121,6 +121,26 @@ blockchain = Blockchain()
 def homepage():
     return render_template('homepage.html')  # running the html page
 
+@app.route('/add')
+def add():
+    return render_template('addtransaction.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == "POST":
+        username = request.form["Username"]
+        password = request.form["Password"]
+        email = request.form["Email"]
+        if  username and password and "@" in email and ".com" in email:
+                   with open('signup.json', 'a+') as f:
+                       json.dump(request.form, f)
+                       f.write("\n")
+                       return render_template('signup.html')
+        else:
+            return render_template('signup.html')  
+    else:
+        return render_template('signup.html')
 
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
