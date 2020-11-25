@@ -5,9 +5,9 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{url_for('static',filename="css/nav.css")}}">
     <link rel="stylesheet" href="{{ url_for('static',filename="css/style.css") }}">
-    
-  
- 
+
+
+
 </head>
 
 <body class="margin">
@@ -15,7 +15,7 @@
         <li class="n2"><a href="{{url_for('homepage')}}">
                 <font class="f1"><b>Home</b></font>
             </a></li>
-        <li class="n2"><a href="{{url_for('add')}}">
+        <li class="n2"><a href="{{url_for('add_transaction')}}">
                 <font class="f1"><b>Add Transaction</b></font>
             </a></li>
         <li class="n2"><a href="{{url_for('mine_block')}}">
@@ -28,11 +28,9 @@
                 <font class="f1"><b>Track Transaction</b></font>
             </a></li>
     </ul>
-    <script type=text/javascript src="{{
-        url_for('static', filename='jquery-3.5.1.js') }}"></script>
-    </body> 
-    {% block content %}
-    {% endblock %}
+</body>
+{% block content %}
+{% endblock %}
 </div>
 
 </html>
