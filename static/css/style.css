@@ -19,18 +19,17 @@
 }
 
 .transaction_box {
-  width: 25rem;
-  height: 35rem;
+  width: fit-content;
+  height: fit-content;
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
-  top: 25rem;
-  left: 40rem;
-  position: absolute;
-  transform: translate(-50%, -50%);
+  top: 20%;
+  left: 33%;
   box-sizing: border-box;
-  padding-right: 2rem;
-  padding-top: 5rem;
-  padding-left: 2rem;
+  padding-right: 2%;
+  padding-top: 5%;
+  padding-left: 2%;
+  position: absolute;
 }
 
 .avatar {
@@ -149,4 +148,41 @@ label > input[type="checkbox"]:checked + *::before {
 label > input[type="checkbox"] + * {
   display: inline-block;
   padding: 0.5rem 1rem;
+}
+.mineheader{
+  color:white;
+  text-align: center;
+  padding-top:13rem
+  }
+.mineBlockButton{
+  margin-top:100px;
+  padding:20px;
+  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+   border: 2px solid white;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius:24px;
+  }
+  .mineBlockButton:hover {
+      background-color: white;
+      background-image: none;
+      opacity:.5;
+      color:  #0d324d;
+      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.64), 0 17px 50px 0 rgba(0,0,0,0.29);
+      }
+  .minePage{
+  margin-top:24px;
+  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+  height:38rem;
+}
+#demo{
+  text-align: center;
+  color: white;
+  font-size: larger;
+  
 }
