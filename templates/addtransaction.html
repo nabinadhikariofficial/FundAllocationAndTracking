@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Add Transaction{% endblock %}
 {% block content %}
-<div class="page">
     <div class="transaction_box">
         <img src="\static\img\transaction.png" class="avatar">
         <h1>Add Transaction</h1>
@@ -13,9 +12,10 @@
             <p class="ep">Amount</p>
             <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                 name="amount" class="input input_email" placeholder="Enter Amount" />
-            <input type="submit" class="submit">
+            <div class="center">
+                <input type="submit" class="submit">
+            </div>
         </form>
-        <h1>{{response}}</h1>
+        <h1 class="trans">{{response}}</h1>
     </div>
-</div>
 {% endblock %}

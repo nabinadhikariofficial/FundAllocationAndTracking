@@ -1,36 +1,7 @@
-
 {% extends "layout.html" %}
 {% block title %}
 Mine BLock{% endblock %}
 {% block content %}
-<script>
-   
-     var showchage='<div id="demo">'+
-    '<h1> Congratulations! you just mined a block</h1>'+
-    '<h2> Enjoy your reward!</h2>'+
-    '<p >'+
-        '{% for x in response %}'+
-    'the message ={{ x.message }}'+
-    '<br >'+
-    'the index={{x.index}}<br >'+
-    'the proof ={{x.proof}}<br >'+
-    'the previous hash={{x.previous_hash}}<br >'+
-    'the timesta,p ={{x.timestamp}}<br >'+
-    '{% endfor %}'+ 
-    '</p>'+
-
-  
-    '</div>';
-    function whatshow(){
-        document.getElementById("changebelow").innerHTML=showchage;
-        
-        
-    }
-
-  
-  
-</script>
-
 <div  id="minepage" class="page">
     <div id="changehere">
     <h3 class="mineheader">

@@ -1,7 +1,7 @@
 import time  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, Markup
 import requests  # for requesting webpages
 from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
@@ -142,7 +142,7 @@ def signup():
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
     if request.method == 'GET':
-        return render_template("mineblock.html"), 200
+        return render_template("mineblock.html")
 
     elif request.method == 'POST':
         previous_block = blockchain.get_previous_block()
@@ -152,16 +152,8 @@ def mine_block():
             sender=node_address, receiver='XYZ', amount=1)
         proof = blockchain.proof_of_work(previous_hash)
         block = blockchain.create_block(proof, previous_hash)
-
-        resp = [{"message": "New block has been mined and added",
-                 "index": block['index'],
-                 "timestamp": block['timestamp'],
-                 "proof": block['proof'],
-                 "previous_hash": block['previous_hash']
-                 # 'transactions': block['transactions']
-                 }]
-
-        return render_template("mineblock.html", response=resp), 200
+        resp= Markup(f"Congratulations! you just mined a block. <br> This transaction will be added to Block {block['index']} <br> Proof: {block['proof']} <br> Previous hash: {block['previous_hash']} <br> Timestamp: {block['timestamp']}")
+        return render_template("mineblock.html", response=resp)
 
 # Getting the full Blockchain
 
@@ -203,7 +195,7 @@ def add_transaction():
             res = "Some elements of the transaction are missing"
             return render_template('addtransaction.html', response=res)
     else:
-        return render_template('addtransaction.html', response="null")
+        return render_template('addtransaction.html', response="The upcoming transaction is added to next block")
 
 # Decentralizing our Blockchain
 
