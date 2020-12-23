@@ -1,6 +1,5 @@
 .page {
   margin-top: 24px;
-  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
   height: 100%;
   width: 100%;
 }
@@ -86,7 +85,15 @@ h1 {
 .show {
   width: 100%;
 }
-
+.center {
+  text-align: center;
+}
+.mine_details {
+  text-align: center;
+  font: 20px;
+  color: #fff;
+  margin-top: 20px;
+}
 .submit {
   margin-top: 10px;
   border: none;
@@ -97,7 +104,6 @@ h1 {
   font-size: 18px;
   border-radius: 20px;
   width: 40%;
-  align-items: center;
 }
 .submit:hover {
   cursor: pointer;
@@ -107,6 +113,10 @@ h1 {
 .acc {
   text-align: center;
   font-size: 18px;
+}
+.trans {
+  text-align: center;
+  font-size: 22px;
 }
 .link {
   text-decoration: none;
@@ -149,16 +159,11 @@ label > input[type="checkbox"] + * {
   display: inline-block;
   padding: 0.5rem 1rem;
 }
-.mineheader{
-  color:white;
-  text-align: center;
-  padding-top:13rem
-  }
 .mineBlockButton{
   margin-top:100px;
   padding:20px;
   background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
-   border: 2px solid white;
+  border: 2px solid white;
   color: white;
   padding: 16px 32px;
   text-align: center;
@@ -175,14 +180,8 @@ label > input[type="checkbox"] + * {
       color:  #0d324d;
       box-shadow: 0 12px 16px 0 rgba(0,0,0,0.64), 0 17px 50px 0 rgba(0,0,0,0.29);
       }
-  .minePage{
-  margin-top:24px;
-  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
-  height:38rem;
-}
 #demo{
   text-align: center;
   color: white;
-  font-size: larger;
-  
+  font-size: larger; 
 }
