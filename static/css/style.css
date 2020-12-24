@@ -197,3 +197,42 @@ label > input[type="checkbox"] + * {
   color: white;
   font-size: 20px;
 }
+/* Logout Button */
+.verified {
+  width: 25px;
+  float: left;
+}
+
+.logout {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Calibri;
+  overflow: hidden;
+  letter-spacing: 3px;
+  opacity: 0;
+  transition: opacity .45s;
+  -webkit-transition: opacity .35s;
+  
+}
+.button {
+  
+	text-decoration: none;
+	float: right;
+  padding: 12px;
+  margin: 50px;
+  color: rgb(0, 0, 0);
+  width: 25px;
+  background-color:#7f5a83;
+  transition: width .35s;
+  -webkit-transition: width .35s;
+  overflow: hidden
+}
+
+.button:hover {
+  width: 100px;
+}
+
+.button:hover .logout{
+  opacity: .9;
+}
+/* Logout Button Close*/
