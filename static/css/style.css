@@ -236,3 +236,18 @@ label > input[type="checkbox"] + * {
   opacity: .9;
 }
 /* Logout Button Close*/
+.profile {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 10px;
+  border-radius: 25px;
+  width: 1000px;
+  height: fit-content; 
+  margin-left: 10%;
+  font-family: Calibri;
+}
+.profile tr td:first-child, .profile p{
+	font-weight: bold;
+	color: #ffffff;
+	padding-right: 15px;
+}
