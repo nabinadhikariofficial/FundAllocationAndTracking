@@ -133,11 +133,11 @@ mysql = MySQL(app)
 
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
-def homepage():
+def home():
     msg = ''
     # Check if "username" and "password" POST requests exist (user submitted form)
-    if 'username' in session:
-        msg = 'you are logged'
+    if 'loggedin' in session:
+        return redirect(url_for('profile'))
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         # Create variables for easy access
         username = request.form['username']
@@ -155,8 +155,8 @@ def homepage():
             session['loggedin'] = True
             session['id'] = account['id']
             session['username'] = account['username']
-            # Redirect to home page
-            return redirect(url_for('add_transaction'))
+            # Redirect to profile page
+            return redirect(url_for('profile'))
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
@@ -166,39 +166,42 @@ def homepage():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     msg = ''
-    if request.method == "POST" and 'Username' in request.form and 'Password' in request.form and 'Email' in request.form:
-        username = request.form["Username"]
-        password = request.form["Password"]
-        email = request.form["Email"]
-        print(username, password, email)
+    if 'loggedin' in session:
+        if request.method == "POST" and 'Username' in request.form and 'Password' in request.form and 'Email' in request.form:
+            username = request.form["Username"]
+            password = request.form["Password"]
+            email = request.form["Email"]
+            print(username, password, email)
         # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(
-            'SELECT * FROM accounts WHERE username = %s', (username,))
-        account = cursor.fetchone()
-        # If account exists show error and validation checks
-        if account:
-            msg = 'Account already exists!'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            msg = 'Invalid email address!'
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Username must contain only characters and numbers!'
-        elif not username or not password or not email:
-            msg = 'Please fill out the form!'
-        else:
-            # Account doesnt exists and the form data is valid, now insert new account into accounts table
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute(
-                'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
-            mysql.connection.commit()
-            msg = 'You have successfully registered!'
-    elif request.method == "POST":
-        msg = 'Please fill the form'
-    return render_template('signup.html', msg=msg)
+                'SELECT * FROM accounts WHERE username = %s', (username,))
+            account = cursor.fetchone()
+        # If account exists show error and validation checks
+            if account:
+                msg = 'Account already exists!'
+            elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+                msg = 'Invalid email address!'
+            elif not re.match(r'[A-Za-z0-9]+', username):
+                msg = 'Username must contain only characters and numbers!'
+            elif not username or not password or not email:
+                msg = 'Please fill out the form!'
+            else:
+                # Account doesnt exists and the form data is valid, now insert new account into accounts table
+                cursor.execute(
+                    'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
+                mysql.connection.commit()
+                msg = 'You have successfully registered!'
+        elif request.method == "POST":
+            msg = 'Please fill the form'
+        return render_template('signup.html', msg=msg)
+    else:
+        return redirect(url_for('home'))
 
 
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
-    if session['loggedin'] == True:
+    if 'loggedin' in session:
         if request.method == 'GET':
             return render_template("mineblock.html")
 
@@ -215,20 +218,33 @@ def mine_block():
             return render_template("mineblock.html", response=resp)
     else:
         return redirect(url_for('home'))
-        
+
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    return render_template('profile.html')
+    if 'loggedin' in session:
+        return render_template('profile.html')
+    else:
+        return redirect(url_for('home'))
 # Getting the full Blockchain
+
+
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    # Redirect to login page
+    return redirect(url_for('home'))
 
 
 @app.route('/get_chain', methods=['GET'])
 def get_chain():
-
-    resp = [{"chain": blockchain.chain}]
-
-    return render_template('viewtransaction.html', response=resp[0])
-
+    if 'loggedin' in session:
+        resp = [{"chain": blockchain.chain}]
+        return render_template('viewtransaction.html', response=resp[0])
+    else:
+        return redirect(url_for('home'))
 # Checking if the Blockchain is valid
 
 
@@ -247,19 +263,20 @@ def is_valid():
 
 @app.route('/add_transaction', methods=['POST', 'GET'])
 def add_transaction():
-    if request.method == "POST":
-        sender = request.form["sender"]
-        receiver = request.form["receiver"]
-        amount = request.form["amount"]
-        if (sender and receiver and amount):
-            index = blockchain.add_transaction(sender, receiver, amount)
-            res = f"This transaction will be added to Block {index}"
-            return render_template('addtransaction.html', response=res)
-        else:
-            res = "Some elements of the transaction are missing"
-            return render_template('addtransaction.html', response=res)
+    res = "The upcoming transaction is added to next block"
+    if 'loggedin' in session:
+        if request.method == "POST":
+            sender = request.form["sender"]
+            receiver = request.form["receiver"]
+            amount = request.form["amount"]
+            if (sender and receiver and amount):
+                index = blockchain.add_transaction(sender, receiver, amount)
+                res = f"This transaction will be added to Block {index}"
+            else:
+                res = "Some elements of the transaction are missing"
+        return render_template('addtransaction.html', response=res)
     else:
-        return render_template('addtransaction.html', response="The upcoming transaction is added to next block")
+        return redirect(url_for('home'))
 
 # Decentralizing our Blockchain
 

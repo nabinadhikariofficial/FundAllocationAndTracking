@@ -3,13 +3,13 @@
 
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{url_for('static',filename="css/nav.css")}}">
-    <link rel="stylesheet" href="{{ url_for('static',filename="css/style.css") }}">
+    <link rel="stylesheet" href="{{url_for('static',filename=" css/nav.css")}}">
+    <link rel="stylesheet" href="{{url_for('static',filename=" css/style.css") }}">
 </head>
 
 <body class="margin">
     <ul class="n1">
-        <li class="n2"><a href="{{url_for('homepage')}}">
+        <li class="n2"><a href="{{url_for('home')}}">
                 <font class="f1"><b>Home</b></font>
             </a></li>
         <li class="n2"><a href="{{url_for('add_transaction')}}">
