@@ -18,9 +18,9 @@
     <h1>Sign Up</h1>
     <form method="POST">
       <p class="ep">Username</p>
-      <input type="text" name="Username" class="input_email" placeholder="Enter Username">
+      <input type="text" name="username" class="input_email" placeholder="Enter Username">
       <p class="ep">Email</p>
-      <input type="text" name="Email" class="input_email" placeholder="Enter Email">
+      <input type="text" name="email" class="input_email" placeholder="Enter Email">
       <p class="ep">Password</p>
       <input type="password" name="password" id="password" class="input_password" placeholder="Enter Password">
       <label>
@@ -30,6 +30,7 @@
       <input type="submit" class="submit" value="Sign Up">
       <p class="acc">You Have an Account? <a href="{{url_for('home')}}" class="link">Sign In</a></p>
     </form>
+    {{msg}}
   </div>
 </div>
 {% endblock %}

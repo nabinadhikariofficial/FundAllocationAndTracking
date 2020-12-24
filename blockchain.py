@@ -130,8 +130,6 @@ mysql = MySQL(app)
 
 
 # Mining a new block
-
-@app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     msg = ''
@@ -166,37 +164,33 @@ def home():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     msg = ''
-    if not 'loggedin' in session:
-        if request.method == "POST" and 'Username' in request.form and 'Password' in request.form and 'Email' in request.form:
-            username = request.form["Username"]
-            password = request.form["Password"]
-            email = request.form["Email"]
-            print(username, password, email)
-        # Check if account exists using MySQL
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == "POST" and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+        username = request.form["username"]
+        password = request.form["password"]
+        email = request.form["email"]
+    # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT * FROM accounts WHERE username = %s', (username,))
+        account = cursor.fetchone()
+    # If account exists show error and validation checks
+        if account:
+            msg = 'Account already exists!'
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = 'Invalid email address!'
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers!'
+        elif not username or not password or not email:
+            msg = 'Please fill out the form!'
+        else:
+            # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute(
-                'SELECT * FROM accounts WHERE username = %s', (username,))
-            account = cursor.fetchone()
-        # If account exists show error and validation checks
-            if account:
-                msg = 'Account already exists!'
-            elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-                msg = 'Invalid email address!'
-            elif not re.match(r'[A-Za-z0-9]+', username):
-                msg = 'Username must contain only characters and numbers!'
-            elif not username or not password or not email:
-                msg = 'Please fill out the form!'
-            else:
-                # Account doesnt exists and the form data is valid, now insert new account into accounts table
-                cursor.execute(
-                    'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
-                mysql.connection.commit()
-                msg = 'You have successfully registered!'
-        elif request.method == "POST":
-            msg = 'Please fill the form'
-        return render_template('signup.html', msg=msg)
-    else:
-        return redirect(url_for('home'))
+                'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
+            mysql.connection.commit()
+            msg = 'You have successfully registered!'
+    elif request.method == "POST":
+        msg = 'Please fill the form'
+    return render_template('signup.html', msg=msg)
 
 
 @app.route('/mine_block', methods=['GET', 'POST'])
