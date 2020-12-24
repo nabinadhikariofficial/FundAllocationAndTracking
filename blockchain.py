@@ -215,7 +215,10 @@ def mine_block():
             return render_template("mineblock.html", response=resp)
     else:
         return redirect(url_for('home'))
-
+        
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    return render_template('profile.html')
 # Getting the full Blockchain
 
 
