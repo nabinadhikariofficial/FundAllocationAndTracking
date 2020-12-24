@@ -217,7 +217,12 @@ def mine_block():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'loggedin' in session:
-        return render_template('profile.html')
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s',
+                       (session['id'],))
+        account = cursor.fetchone()
+        # Show the profile page with account info
+        return render_template('profile.html', account=account)
     else:
         return redirect(url_for('home'))
 # Getting the full Blockchain
