@@ -2,37 +2,35 @@
 {% block title %}Homepage{% endblock %}
 {% block content %}
 <script>
-    function myFunction() {
-      var x = document.getElementById("password");
-      if (x.type === "password") {
-        x.type = "text";
-      } else {
-        x.type = "password";
-      }
+  function myFunction() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
     }
-    </script>
+  }
+</script>
 <div class="page">
   <div class="login-box">
     <img src="\static\img\avatar.png" class="avatar">
     <h1>Login Here</h1>
-    <form>
-        <p class="ep">Email</p>
-        <input type="text" name="email" class="input_email" placeholder="Enter Email">
-        <p class="ep">Password</p>
-        <input type="password" name="password" class="input_password" id="password" placeholder="Enter Password">
-        <label>
-            <input type="checkbox" name="checkbox" value="no" onclick="myFunction()">
-            <span class="show">Show Password</span>
-        </label>
-        <div class="center">
-          <input type="submit" name="submit" class="submit" value="Login"> 
-        </div>
-        <p class="acc">Don't Have an Account?<a href="{{url_for('signup')}}" class="link">Sign Up</a></p>         
+    <form method="POST">
+      <p class="ep">Username</p>
+      <input type="text" name="username" class="input_email" placeholder="Enter Email">
+      <p class="ep">Password</p>
+      <input type="password" name="password" class="input_password" id="password" placeholder="Enter Password">
+      <label>
+        <input type="checkbox" name="checkbox" value="no" onclick="myFunction()">
+        <span class="show">Show Password</span>
+      </label>
+      <div class="center">
+        <input type="submit" name="submit" class="submit" value="Login">
+      </div>
+      <p class="acc">Don't Have an Account?<a href="{{url_for('signup')}}" class="link">Sign Up</a></p>
     </form>
-    <table>
-    </table>
-        
+    {{msg}}
+  </div>
 </div>
-</div>    
 
 {% endblock %}
