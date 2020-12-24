@@ -2,20 +2,14 @@
 {% block title %}
 Mine BLock{% endblock %}
 {% block content %}
-<div  id="minepage" class="page">
-    <div id="changehere">
-    <h3 class="mineheader">
+<div class="center">
+    <h3>
         Just a click away from mining the next block.
     </h3>
-<form method="POST" style="padding-left:36rem"  >
-  <button class="mineBlockButton" onclick="whatshow()" >Mine Block</button>
-  
+<form method="POST">
+  <button class="mineBlockButton" >Mine Block</button>
 </form>
-<div id="changebelow">
-
-</div>
-</div>
-
+<p class="ep_mine">{{response}}</p>
 </div>
 
 

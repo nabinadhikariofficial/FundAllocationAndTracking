@@ -185,3 +185,15 @@ label > input[type="checkbox"] + * {
   color: white;
   font-size: larger; 
 }
+.center {
+  margin-top: 10%;
+  text-align: center;
+}
+.ep_mine{
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  font-family: Calibri;
+  color: white;
+  font-size: 20px;
+}
