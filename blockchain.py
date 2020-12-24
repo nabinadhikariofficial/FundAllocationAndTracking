@@ -166,7 +166,7 @@ def home():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     msg = ''
-    if 'loggedin' in session:
+    if not 'loggedin' in session:
         if request.method == "POST" and 'Username' in request.form and 'Password' in request.form and 'Email' in request.form:
             username = request.form["Username"]
             password = request.form["Password"]
