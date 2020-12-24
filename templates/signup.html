@@ -2,34 +2,35 @@
 {% block title %}Add Transaction{% endblock %}
 {% block content %}
 <script>
-    function myFunction() {
-      var x = document.getElementById("password");
-      if (x.type === "password") {
-        x.type = "text";
-      } else {
-        x.type = "password";
-      }
+  function myFunction() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
     }
-    </script>
-    <div class="page">
-    <div class="transaction_box">
-        <img src="\static\img\signup.png" class="signup_photo">
-        <h1>Sign Up</h1>
-            <form method="POST">
-            <p class="ep">Username</p>
-            <input type="text" name="Username" class="input_email" placeholder="Enter Username">
-            <p class="ep">Email</p>
-            <input type="text" name="Email" class="input_email" placeholder="Enter Email">
-            <p class="ep">Password</p>
-            <input type="password" name="Password" class="input_password" placeholder="Enter Password">
-            <label>
-                <input type="checkbox"  value="no" onclick="myFunction()">
-                <span class="show">Show Password</span>
-            </label>
-            <input type="submit" class="submit" value="Sign Up">  
-            <p class="acc">Dont Have an Account?     <a href="{{url_for('homepage')}}" class="link">Sign In</a></p>
-            </form>
-        </div>>
-        </div>
+  }
+</script>
+<div class="page">
+  <div class="transaction_box">
+    <img src="\static\img\signup.png" class="signup_photo">
+    <h1>Sign Up</h1>
+    <form method="POST">
+      <p class="ep">Username</p>
+      <input type="text" name="Username" class="input_email" placeholder="Enter Username">
+      <p class="ep">Email</p>
+      <input type="text" name="Email" class="input_email" placeholder="Enter Email">
+      <p class="ep">Password</p>
+      <input type="password" name="Password" class="input_password" placeholder="Enter Password" id="password">
+      <label>
+        <input type="checkbox" value="no" onclick="myFunction()">
+        <span class="show">Show Password</span>
+      </label>
+      <input type="submit" class="submit" value="Sign Up">
+      <p class="acc">Dont Have an Account? <a href="{{url_for('homepage')}}" class="link">Sign In</a></p>
+      {{msg}}
+    </form>
+  </div>>
+</div>
 
 {% endblock %}

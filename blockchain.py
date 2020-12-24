@@ -1,13 +1,16 @@
 import time  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
-from flask import Flask, request, render_template, jsonify, Markup
+from flask import Flask, request, render_template, jsonify, Markup, session, redirect, url_for
 import requests  # for requesting webpages
 from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
-
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import re
 
 # Building a Blockchain
+
 
 class Blockchain:  # defining our blockchain class
     def __init__(self):
@@ -114,46 +117,104 @@ node_address = str(uuid4()).replace('-', '')
 # Creating a Blockchain
 blockchain = Blockchain()
 
+app.secret_key = 'key'
+
+# database connection details below
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_DB'] = 'login'
+
+# Intialize MySQL
+mysql = MySQL(app)
+
+
 # Mining a new block
 
-
 @app.route('/')
+@app.route('/home', methods=['GET', 'POST'])
 def homepage():
-    return render_template('homepage.html')  # running the html page
+    msg = ''
+    # Check if "username" and "password" POST requests exist (user submitted form)
+    if 'username' in session:
+        msg = 'you are logged'
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        # Create variables for easy access
+        username = request.form['username']
+        password = request.form['password']
+        # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
+        # Fetch one record and return result
+        account = cursor.fetchone()
+        # If account exists in accounts table in out database
+        print(account)
+        if account:
+            # Create session data, we can access this data in other routes
+            session['loggedin'] = True
+            session['id'] = account['id']
+            session['username'] = account['username']
+            # Redirect to home page
+            return redirect(url_for('add_transaction'))
+        else:
+            # Account doesnt exist or username/password incorrect
+            msg = 'Incorrect username/password!'
+    return render_template('homepage.html', msg=msg)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == "POST":
+    msg = ''
+    if request.method == "POST" and 'Username' in request.form and 'Password' in request.form and 'Email' in request.form:
         username = request.form["Username"]
         password = request.form["Password"]
         email = request.form["Email"]
-        if username and password and "@" in email and ".com" in email:
-            with open('signup.json', 'a+') as f:
-                json.dump(request.form, f)
-                f.write("\n")
-                return render_template('signup.html')
+        print(username, password, email)
+        # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT * FROM accounts WHERE username = %s', (username,))
+        account = cursor.fetchone()
+        # If account exists show error and validation checks
+        if account:
+            msg = 'Account already exists!'
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = 'Invalid email address!'
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers!'
+        elif not username or not password or not email:
+            msg = 'Please fill out the form!'
         else:
-            return render_template('signup.html')
-    else:
-        return render_template('signup.html')
+            # Account doesnt exists and the form data is valid, now insert new account into accounts table
+            cursor.execute(
+                'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
+            mysql.connection.commit()
+            msg = 'You have successfully registered!'
+    elif request.method == "POST":
+        msg = 'Please fill the form'
+    return render_template('signup.html', msg=msg)
 
 
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
-    if request.method == 'GET':
-        return render_template("mineblock.html")
+    if session['loggedin'] == True:
+        if request.method == 'GET':
+            return render_template("mineblock.html")
 
-    elif request.method == 'POST':
-        previous_block = blockchain.get_previous_block()
-        previous_hash = blockchain.hash(previous_block)
-        # award for mining block
-        blockchain.add_transaction(
-            sender=node_address, receiver='XYZ', amount=1)
-        proof = blockchain.proof_of_work(previous_hash)
-        block = blockchain.create_block(proof, previous_hash)
-        resp= Markup(f"Congratulations! you just mined a block. <br> This transaction will be added to Block {block['index']} <br> Proof: {block['proof']} <br> Previous hash: {block['previous_hash']} <br> Timestamp: {block['timestamp']}")
-        return render_template("mineblock.html", response=resp)
+        elif request.method == 'POST':
+            previous_block = blockchain.get_previous_block()
+            previous_hash = blockchain.hash(previous_block)
+            # award for mining block
+            blockchain.add_transaction(
+                sender=node_address, receiver='XYZ', amount=1)
+            proof = blockchain.proof_of_work(previous_hash)
+            block = blockchain.create_block(proof, previous_hash)
+            resp = Markup(
+                f"Congratulations! you just mined a block. <br> This transaction will be added to Block {block['index']} <br> Proof: {block['proof']} <br> Previous hash: {block['previous_hash']} <br> Timestamp: {block['timestamp']}")
+            return render_template("mineblock.html", response=resp)
+    else:
+        return redirect(url_for('home'))
 
 # Getting the full Blockchain
 
