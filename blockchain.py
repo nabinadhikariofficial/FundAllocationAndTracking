@@ -5,8 +5,7 @@ from flask import Flask, request, render_template, jsonify, Markup, session, red
 import requests  # for requesting webpages
 from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
+import mysql.connector
 import re
 
 # Building a Blockchain
@@ -120,16 +119,17 @@ blockchain = Blockchain()
 app.secret_key = 'key'
 
 # database connection details below
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'admin'
-app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'login'
+mydb = mysql.connector.connect(
+    host="34.93.15.203",
+    user="root",
+    passwd="blockchain"
+)
 
-# Intialize MySQL
-mysql = MySQL(app)
-
-
+# making cursor
+cursor = mydb.cursor(dictionary=True)
 # Mining a new block
+
+
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     msg = ''
@@ -141,9 +141,8 @@ def home():
         username = request.form['username']
         password = request.form['password']
         # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
-            'SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
+            'SELECT * FROM login.accounts WHERE username = %s AND password = %s', (username, password,))
         # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
@@ -152,6 +151,7 @@ def home():
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
             session['id'] = account['id']
+            # some work left here but done with dictcursor
             session['username'] = account['username']
             # Redirect to profile page
             return redirect(url_for('profile'))
@@ -169,9 +169,8 @@ def signup():
         password = request.form["password"]
         email = request.form["email"]
     # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
-            'SELECT * FROM accounts WHERE username = %s', (username,))
+            'SELECT * FROM login.accounts WHERE username = %s', (username,))
         account = cursor.fetchone()
     # If account exists show error and validation checks
         if account:
@@ -185,8 +184,7 @@ def signup():
         else:
             # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute(
-                'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
-            mysql.connection.commit()
+                'INSERT INTO login.accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
             msg = 'You have successfully registered!'
     elif request.method == "POST":
         msg = 'Please fill the form'
@@ -217,8 +215,7 @@ def mine_block():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE id = %s',
+        cursor.execute('SELECT * FROM login.accounts WHERE id = %s',
                        (session['id'],))
         account = cursor.fetchone()
         # Show the profile page with account info
