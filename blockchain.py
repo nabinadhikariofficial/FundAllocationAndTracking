@@ -122,7 +122,8 @@ app.secret_key = 'key'
 mydb = mysql.connector.connect(
     host="34.93.15.203",
     user="root",
-    passwd="blockchain"
+    passwd="blockchain",
+    database="login"
 )
 
 # making cursor
@@ -142,7 +143,7 @@ def home():
         password = request.form['password']
         # Check if account exists using MySQL
         cursor.execute(
-            'SELECT * FROM login.accounts WHERE username = %s AND password = %s', (username, password,))
+            'SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
         # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
@@ -170,7 +171,7 @@ def signup():
         email = request.form["email"]
     # Check if account exists using MySQL
         cursor.execute(
-            'SELECT * FROM login.accounts WHERE username = %s', (username,))
+            'SELECT * FROM accounts WHERE username = %s', (username,))
         account = cursor.fetchone()
     # If account exists show error and validation checks
         if account:
@@ -184,7 +185,8 @@ def signup():
         else:
             # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute(
-                'INSERT INTO login.accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
+                'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
+            mydb.commit()
             msg = 'You have successfully registered!'
     elif request.method == "POST":
         msg = 'Please fill the form'
@@ -215,7 +217,7 @@ def mine_block():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM login.accounts WHERE id = %s',
+        cursor.execute('SELECT * FROM accounts WHERE id = %s',
                        (session['id'],))
         account = cursor.fetchone()
         # Show the profile page with account info
