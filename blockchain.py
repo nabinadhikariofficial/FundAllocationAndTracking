@@ -120,9 +120,9 @@ app.secret_key = 'key'
 
 # database connection details below
 mydb = mysql.connector.connect(
-    host="34.93.15.203",
+    host="34.68.7.71",
     user="root",
-    passwd="blockchain",
+    passwd="Gs92p421dOk7mNeL",
     database="login"
 )
 
