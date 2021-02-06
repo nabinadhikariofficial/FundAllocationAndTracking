@@ -1,37 +1,17 @@
-.page {
-  margin-top: 24px;
-  height: 100%;
-  width: 100%;
-}
-.login-box {
-  width: fit-content;
-  height: fit-content;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  top: 20%;
-  left: 33%;
-  box-sizing: border-box;
-  padding-right: 2%;
-  padding-top: 5%;
-  padding-left: 2%;
-  position: absolute;
-}
 
-.transaction_box {
-  width: fit-content;
-  height: fit-content;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  top: 20%;
-  left: 33%;
-  box-sizing: border-box;
-  padding-right: 2%;
-  padding-top: 5%;
-  padding-left: 2%;
-  position: absolute;
-}
+/* Login Page*/
 
-.avatar {
+.log{                       /*div for login page*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background:white;
+  width: 400px;
+  transform: translate(-50% , -50%);
+  border-radius: 10px;
+  box-shadow: 5px 10px 8px 10px #888888;
+}
+.avatar {               /*for login photo*/
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -39,6 +19,109 @@
   top: -50px;
   left: calc(50% - 50px);
 }
+.log h1{            /*Login Heading*/
+  text-align: center;
+  margin-top: 50px;
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid silver;
+}
+.log form{            /*Form for login*/
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+form .text{       /*Username and Password*/
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
+}
+.text input{   /*Username and Password input*/
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  background: none;
+  outline: none;
+}
+.ep{             /*Username and Password display*/
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  color: #adadad;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  transition: .5s;
+}
+.underline::before{       /*Underlined below username and password*/
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #2691d9;
+  transition: .5s;
+}
+.text input:focus ~ .ep,
+.text input:valid ~ .ep{              /*Transition after selection of username and password*/
+  font-weight: bold;
+  top: -5px;
+  color: #2691d9;
+}
+.text input:focus ~ .underline::before,
+.text input:valid ~ .underline::before{         /*Transition of undrerlined dashafter selection of username and password*/
+  width: 100%;
+}
+.sh{                  /*Show password div*/
+  margin: -5px 0 20px 5px;
+  color: #0d324d;
+  cursor: pointer;
+}
+.incorrect{
+  margin: -5px 0 20px 5px;
+  color: #FF3333 ;
+}
+.show{        /*Show password color*/
+  color: #2691d9;
+}
+.show:hover{          /*Show password hover*/
+  text-decoration: underline
+}
+label > input[type="checkbox"]:checked + * {        /*Show password after clicking*/
+  font-weight: bold;
+  color: rgb(21, 255, 0);
+}
+.login{                 /*Login in button*/
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: #2691d9;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  cursor: pointer;
+  outline: none;
+}
+.login:hover{
+  border-color: #2691d9;
+  transition: .5s;
+}
+.signup{        /*Signup div*/
+  margin: 30px 0;
+  text-align: center;
+  font-size: 16px;
+  color: #666666;
+}
+.signup a{        /*Link for signup*/
+  color: #2691d9;
+  text-decoration: none;
+}
+.signup a:hover{
+  text-decoration: underline;
+}
+/* Login finished*/
+/*Sign Up*/
 .signup_photo {
   width: 100px;
   height: 100px;
@@ -46,119 +129,18 @@
   top: -50px;
   left: calc(50% - 50px);
 }
-h1 {
-  margin: 0;
-  padding: 0 0 20px;
-  text-align: center;
-  font-size: 22px;
-  font-family: Calibri;
+/*Sign Up Finished*/
+/*Add Trasaction*/
+.gap{
+  margin-bottom: 10px;
 }
-.ep {
-  margin: 0;
-  padding: 0;
-  font-weight: bold;
-  font-family: Calibri;
-  font-size: 20px;
+.correct{
+  margin: -5px 0 20px 5px;
+  color: #66ff00 ;
 }
-.input_email {
-  border: none;
-  border-bottom: 1px solid #fff;
-  background: transparent;
-  outline: none;
-  height: 40px;
-  color: #fff;
-  font-size: 16px;
-  width: 100%;
-  margin-bottom: 20px;
-}
-.input_password {
-  border: none;
-  border-bottom: 1px solid #fff;
-  background: transparent;
-  outline: none;
-  height: 40px;
-  color: #fff;
-  font-size: 16px;
-  width: 100%;
-  margin-bottom: 2px;
-}
-.show {
-  width: 100%;
-}
-.center {
-  text-align: center;
-}
-.mine_details {
-  text-align: center;
-  font: 20px;
-  color: #fff;
-  margin-top: 20px;
-}
-.submit {
-  margin-top: 10px;
-  border: none;
-  outline: none;
-  height: 40px;
-  background: #1c8adb;
-  color: #fff;
-  font-size: 18px;
-  border-radius: 20px;
-  width: 40%;
-}
-.submit:hover {
-  cursor: pointer;
-  background: #39dc79;
-  color: rgb(0, 0, 0);
-}
-.acc {
-  text-align: center;
-  font-size: 18px;
-}
-.trans {
-  text-align: center;
-  font-size: 22px;
-}
-.link {
-  text-decoration: none;
-  font-size: 20px;
-  color: #39b7cd;
-  font-weight: bold;
-}
-.login-box a:hover {
-  color: #39dc79;
-}
-
-/* pretty radio */
-label > input[type="checkbox"] {
-  display: none;
-}
-label > input[type="checkbox"] + *::before {
-  content: "";
-  display: inline-block;
-  vertical-align: bottom;
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.3rem;
-  border-radius: 10%;
-  border-style: solid;
-  border-width: 0.1rem;
-  border-color: rgb(0, 0, 0);
-}
-label > input[type="checkbox"]:checked + * {
-  color: rgb(21, 255, 0);
-}
-label > input[type="checkbox"]:checked + *::before {
-  content: "✓";
-  color: white;
-  background: teal;
-  border-color: teal;
-}
-
+/*Add Transaction Finished*/
 /* basic layout */
-label > input[type="checkbox"] + * {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-}
+
 .mineBlockButton {
   margin-top: 100px;
   padding: 20px;
