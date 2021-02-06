@@ -7,6 +7,8 @@ from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
 import mysql.connector
 import re
+import bitcoin
+from pycoin.ecdsa import generator_secp256k1, sign, verify
 
 # Building a Blockchain
 
@@ -23,11 +25,14 @@ class Blockchain:  # defining our blockchain class
 
     def create_block(self, proof, previous_hash):  # create a block
 
-        block = {'index': len(self.chain)+1,
-                 'timestamp': self.time_is,
-                 'proof': proof,
-                 'previous_hash': previous_hash,
-                 'transactions': self.transactions}
+        block = {
+            'index': len(self.chain)+1,
+            'timestamp': self.time_is,
+            'proof': proof,
+            'previous_hash': previous_hash,
+            'transactions': self.transactions
+        }
+
         self.transactions = []  # resseting the transaction lists
         self.chain.append(block)
         return block
@@ -128,6 +133,28 @@ mydb = mysql.connector.connect(
 
 # making cursor
 cursor = mydb.cursor(dictionary=True)
+
+# signature conversion functions
+
+
+def sha3_256Hash(msg):
+    msg = str(msg)
+    print("string msg:", msg)
+    hashBytes = hashlib.sha3_256(msg.encode("utf8")).digest()
+    return int.from_bytes(hashBytes, byteorder="big")
+
+
+def signECDSAsecp256k1(msg, decoded_private_key):
+    msgHash = sha3_256Hash(msg)
+    signature = sign(generator_secp256k1, decoded_private_key, msgHash)
+    return signature
+
+
+def verifyECDSAsecp256k1(msg, signature, public_key):
+    msgHash = sha3_256Hash(msg)
+    valid = verify(generator_secp256k1, public_key, msgHash, signature)
+    return valid
+
 # Mining a new block
 
 
@@ -141,6 +168,8 @@ def home():
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
+        # converting password into sha 256 to check
+        password = hashlib.sha256(password.encode()).hexdigest()
         # Check if account exists using MySQL
         cursor.execute(
             'SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
@@ -183,11 +212,26 @@ def signup():
         elif not username or not password or not email:
             msg = 'Please fill out the form!'
         else:
+            # converting password into sha 256 to store
+            password = hashlib.sha256(password.encode()).hexdigest()
             # Account doesnt exists and the form data is valid, now insert new account into accounts table
+            # To generate new private key
+            temp_private_key = bitcoin.random_key()
+            # Multiply the EC generator point G with the private key to get a public key point
+            decoded_private_key = bitcoin.decode_privkey(
+                temp_private_key, 'hex')
+            public_key = bitcoin.fast_multiply(bitcoin.G, decoded_private_key)
+            # Compress public key, adjust prefix depending on whether y is even or odd
+            (public_key_x, public_key_y) = public_key
+            # compressing public key
+            compressed_prefix = '02' if (public_key_y % 2) == 0 else '03'
+            public_key_comp = compressed_prefix + \
+                (bitcoin.encode(public_key_x, 16).zfill(64))
             cursor.execute(
-                'INSERT INTO accounts VALUES (NULL, %s, %s, %s,%s)', (username, password, email, "user"))
+                'INSERT INTO accounts VALUES (NULL,%s,%s,%s,%s,%s,%s,%s)', (username, password, email, "user", str(public_key_x), str(public_key_y), str(public_key_comp)))
             mydb.commit()
-            msg = 'You have successfully registered!'
+            print(temp_private_key)
+            msg = 'You have successfully registered! Your private key is:/n' + temp_private_key
     elif request.method == "POST":
         msg = 'Please fill the form'
     return render_template('signup.html', msg=msg)
