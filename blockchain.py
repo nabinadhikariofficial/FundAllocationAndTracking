@@ -81,10 +81,11 @@ class Blockchain:  # defining our blockchain class
             block_index += 1
         return True
 
-    def add_transaction(self, sender, receiver, amount):
+    def add_transaction(self, sender, receiver, amount, signature):
         self.transactions.append({'sender': sender,
                                   'receiver': receiver,
-                                  'amount': amount})
+                                  'amount': amount,
+                                  'signature': signature})
         previous_block = self.get_previous_block()
         return previous_block['index'] + 1
 
@@ -134,6 +135,14 @@ mydb = mysql.connector.connect(
 # making cursor
 cursor = mydb.cursor(dictionary=True)
 
+# Multiply the EC generator point G with the private key to get a public key point
+
+
+def public_key_gen(temp_private_key):
+    decoded_private_key = bitcoin.decode_privkey(
+        temp_private_key, 'hex')
+    public_key = bitcoin.fast_multiply(bitcoin.G, decoded_private_key)
+    return public_key
 # signature conversion functions
 
 
@@ -154,6 +163,10 @@ def verifyECDSAsecp256k1(msg, signature, public_key):
     msgHash = sha3_256Hash(msg)
     valid = verify(generator_secp256k1, public_key, msgHash, signature)
     return valid
+
+
+def check_signature():
+    return
 
 # Mining a new block
 
@@ -217,20 +230,14 @@ def signup():
             # Account doesnt exists and the form data is valid, now insert new account into accounts table
             # To generate new private key
             temp_private_key = bitcoin.random_key()
-            # Multiply the EC generator point G with the private key to get a public key point
-            decoded_private_key = bitcoin.decode_privkey(
-                temp_private_key, 'hex')
-            public_key = bitcoin.fast_multiply(bitcoin.G, decoded_private_key)
-            # Compress public key, adjust prefix depending on whether y is even or odd
-            (public_key_x, public_key_y) = public_key
-            # compressing public key
+            (public_key_x, public_key_y) = public_key_gen(temp_private_key)
+            # compressing public key Compress public key, adjust prefix depending on whether y is even or odd
             compressed_prefix = '02' if (public_key_y % 2) == 0 else '03'
             public_key_comp = compressed_prefix + \
                 (bitcoin.encode(public_key_x, 16).zfill(64))
             cursor.execute(
                 'INSERT INTO accounts VALUES (NULL,%s,%s,%s,%s,%s,%s,%s)', (username, password, email, "user", str(public_key_x), str(public_key_y), str(public_key_comp)))
             mydb.commit()
-            print(temp_private_key)
             msg = 'You have successfully registered! Your private key is:/n' + temp_private_key
     elif request.method == "POST":
         msg = 'Please fill the form'
@@ -248,7 +255,7 @@ def mine_block():
             previous_hash = blockchain.hash(previous_block)
             # award for mining block
             blockchain.add_transaction(
-                sender=node_address, receiver='XYZ', amount=1)
+                sender=node_address, receiver=session['username'], amount=1, signature="mined")
             proof = blockchain.proof_of_work(previous_hash)
             block = blockchain.create_block(proof, previous_hash)
             resp = Markup(
@@ -311,9 +318,23 @@ def add_transaction():
             sender = request.form["sender"]
             receiver = request.form["receiver"]
             amount = request.form["amount"]
+            private_key = request.form["private_key"]
+            msg = {'sender': sender, 'receiver': receiver, 'amount': amount}
+            (temp_public_key_x, temp_public_key_y) = public_key_gen(private_key)
+            cursor.execute(
+                'SELECT * FROM accounts WHERE id = %s', (session['id'],))
+            account = cursor.fetchone()
             if (sender and receiver and amount):
-                index = blockchain.add_transaction(sender, receiver, amount)
-                res = f"This transaction will be added to Block {index}"
+                # checking if private key is true or not
+                if (str(temp_public_key_x) == account['public_key_x'] and str(temp_public_key_y) == account['public_key_y']):
+                    # adding signature to the transaction
+                    signature = signECDSAsecp256k1(
+                        msg, bitcoin.decode_privkey(private_key, 'hex'))
+                    index = blockchain.add_transaction(
+                        sender, receiver, amount, signature)
+                    res = f"This transaction will be added to Block {index}"
+                else:
+                    res = "Incorrect private key!!!"
             else:
                 res = "Some elements of the transaction are missing"
         return render_template('addtransaction.html', response=res)

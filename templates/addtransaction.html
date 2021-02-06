@@ -2,29 +2,35 @@
 {% block title %}Add Transaction{% endblock %}
 {% block content %}
 <div class="log">
-    <img src="\static\img\transaction.png" class="signup_photo">
-    <h1>Add Transaction</h1>
-    <form method="POST" >
-      <div class="text">
-        <input type="text" name="sender"  required>
-        <span class="underline"></span>
-        <label class="ep"  >Sender</label>
-      </div>
-      <div class="text">
-        <input type="text" name="receiver"  required>
-        <span class="underline"></span>
-        <label class="ep"  >Receiver</label>
-      </div>
-      <div class="text">
-        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="amount" required>
-        <span class="underline"></span>
-        <label class="ep" >Amount</label>
-      </div>
-      <div class="correct">
-        {{response}}
-      </div>
-      <input type="submit" name="submit" value="Add Transaction" class="login">
-      <div class="gap"></div>
-    </form>
-  </div>
+  <img src="\static\img\transaction.png" class="signup_photo">
+  <h1>Add Transaction</h1>
+  <form method="POST">
+    <div class="text">
+      <input type="text" name="sender" required>
+      <span class="underline"></span>
+      <label class="ep">Sender</label>
+    </div>
+    <div class="text">
+      <input type="text" name="receiver" required>
+      <span class="underline"></span>
+      <label class="ep">Receiver</label>
+    </div>
+    <div class="text">
+      <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+        name="amount" required>
+      <span class="underline"></span>
+      <label class="ep">Amount</label>
+    </div>
+    <div class="text">
+      <input type="text" name="private_key" required>
+      <span class="underline"></span>
+      <label class="ep">private_key<label>
+    </div>
+    <div class="correct">
+      {{response}}
+    </div>
+    <input type="submit" name="submit" value="Add Transaction" class="login">
+    <div class="gap"></div>
+  </form>
+</div>
 {% endblock %}
