@@ -7,6 +7,10 @@ from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
 import mysql.connector
 import re
+import bitcoin
+from pycoin.ecdsa import generator_secp256k1, sign, verify
+import hashlib, secrets
+from address_sign_verify import private_key, hex_encoded_public_key, hex_encoded_signature, valid 
 
 # Building a Blockchain
 
@@ -23,11 +27,14 @@ class Blockchain:  # defining our blockchain class
 
     def create_block(self, proof, previous_hash):  # create a block
 
-        block = {'index': len(self.chain)+1,
-                 'timestamp': self.time_is,
-                 'proof': proof,
-                 'previous_hash': previous_hash,
-                 'transactions': self.transactions}
+        block = {
+                'index': len(self.chain)+1,
+                'timestamp': self.time_is,
+                'proof': proof,
+                'previous_hash': previous_hash,
+                'transactions': self.transactions
+                }
+                
         self.transactions = []  # resseting the transaction lists
         self.chain.append(block)
         return block
@@ -105,7 +112,6 @@ class Blockchain:  # defining our blockchain class
             return True
         return False
 
-
 # Creating a Web App
 app = Flask(__name__)
 
@@ -120,9 +126,10 @@ app.secret_key = 'key'
 
 # database connection details below
 mydb = mysql.connector.connect(
-    host="34.93.15.203",
+    host="34.68.7.71",
     user="root",
-    passwd="blockchain"
+    passwd="Gs92p421dOk7mNeL",
+    database="login"
 )
 
 # making cursor
@@ -172,6 +179,8 @@ def signup():
         cursor.execute(
             'SELECT * FROM login.accounts WHERE username = %s', (username,))
         account = cursor.fetchone()
+    # To generate new private key
+        valid_private_key = False
     # If account exists show error and validation checks
         if account:
             msg = 'Account already exists!'
