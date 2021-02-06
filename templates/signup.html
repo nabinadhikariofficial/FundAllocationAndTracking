@@ -1,36 +1,48 @@
 {% extends "layout.html" %}
-{% block title %}Add Transaction{% endblock %}
+{% block title %}Sign Up{% endblock %}
 {% block content %}
 <script>
   function myFunction() {
     var x = document.getElementById("password");
     if (x.type === "password") {
       x.type = "text";
-    }
-    else {
+    } else {
       x.type = "password";
     }
   }
 </script>
-<div class="page">
-  <div class="transaction_box">
-    <img src="\static\img\signup.png" class="signup_photo">
-    <h1>Sign Up</h1>
-    <form method="POST">
-      <p class="ep">Username</p>
-      <input type="text" name="username" class="input_email" placeholder="Enter Username">
-      <p class="ep">Email</p>
-      <input type="text" name="email" class="input_email" placeholder="Enter Email">
-      <p class="ep">Password</p>
-      <input type="password" name="password" id="password" class="input_password" placeholder="Enter Password">
+<div class="log">
+  <img src="\static\img\signup.png" class="signup_photo">
+  <h1>Sign Up</h1>
+  <form method="POST" >
+    <div class="text">
+      <input type="text" name="username"  required>
+      <span class="underline"></span>
+      <label class="ep"  >Username</label>
+    </div>
+    <div class="text">
+      <input type="text" name="email"  required>
+      <span class="underline"></span>
+      <label class="ep"  >Email</label>
+    </div>
+    <div class="text">
+      <input type="password" name="password" id="password" required>
+      <span class="underline"></span>
+      <label class="ep" >Password</label>
+    </div>
+    <div class="incorrect">
+      {{msg}}
+    </div>
+    <div class="sh">
       <label>
-        <input type="checkbox" value="no" onclick="myFunction()">
+        <input type="checkbox" name="checkbox" value="no" onclick="myFunction()">
         <span class="show">Show Password</span>
       </label>
-      <input type="submit" class="submit" value="Sign Up">
-      <p class="acc">You Have an Account? <a href="{{url_for('home')}}" class="link">Sign In</a></p>
-    </form>
-    {{msg}}
-  </div>
+    </div>
+    <input type="submit" name="submit" value="Sign Up" class="login">
+    <div class="signup">
+      Have an account? <a href="{{url_for('home')}}">Login</a>
+    </div>
+  </form>
 </div>
 {% endblock %}

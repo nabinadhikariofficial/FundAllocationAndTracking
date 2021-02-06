@@ -11,26 +11,34 @@
     }
   }
 </script>
-<div class="page">
-  <div class="login-box">
-    <img src="\static\img\avatar.png" class="avatar">
-    <h1>Login Here</h1>
-    <form method="POST">
-      <p class="ep">Username</p>
-      <input type="text" name="username" class="input_email" placeholder="Enter Email">
-      <p class="ep">Password</p>
-      <input type="password" name="password" class="input_password" id="password" placeholder="Enter Password">
+<div class="log">
+  <img src="\static\img\avatar.png" class="avatar">
+  <h1>Login</h1>
+  <form method="POST" >
+    <div class="text">
+      <input type="text" name="username"  required>
+      <span class="underline"></span>
+      <label class="ep"  >Username</label>
+    </div>
+    <div class="text">
+      <input type="password" name="password" id="password" required>
+      <span class="underline"></span>
+      <label class="ep" >Password</label>
+    </div>
+    <div class="incorrect">
+      {{msg}}
+    </div>
+    <div class="sh">
       <label>
         <input type="checkbox" name="checkbox" value="no" onclick="myFunction()">
         <span class="show">Show Password</span>
       </label>
-      <div class="center">
-        <input type="submit" name="submit" class="submit" value="Login">
-      </div>
-      <p class="acc">Don't Have an Account?<a href="{{url_for('signup')}}" class="link">Sign Up</a></p>
-    </form>
-    {{msg}}
-  </div>
+    </div>
+    <input type="submit" name="submit" value="Login" class="login">
+    <div class="signup">
+      Don't have an account? <a href="{{url_for('signup')}}">SignUp</a>
+    </div>
+  </form>
 </div>
 
 {% endblock %}
