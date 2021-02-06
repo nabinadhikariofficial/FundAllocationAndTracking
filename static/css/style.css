@@ -1,9 +1,8 @@
-
 /* Login Page*/
 
 .log{                       /*div for login page*/
   position: absolute;
-  top: 50%;
+  top: 63%;
   left: 50%;
   background:white;
   width: 400px;
@@ -217,6 +216,7 @@ label > input[type="checkbox"]:checked + * {        /*Show password after clicki
   opacity: 0.9;
 }
 /* Logout Button Close*/
+/*Profile Information*/
 .profile {
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
@@ -234,3 +234,4 @@ label > input[type="checkbox"]:checked + * {        /*Show password after clicki
   color: #ffffff;
   padding-right: 15px;
 }
+/*Profile Information close*/
