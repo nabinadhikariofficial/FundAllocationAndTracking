@@ -85,6 +85,7 @@ class Blockchain:  # defining our blockchain class
         self.transactions.append({'sender': sender,
                                   'receiver': receiver,
                                   'amount': amount,
+                                  'transaction_time': str(int(time.time())),
                                   'signature': signature})
         previous_block = self.get_previous_block()
         return previous_block['index'] + 1
@@ -238,7 +239,7 @@ def signup():
             cursor.execute(
                 'INSERT INTO accounts VALUES (NULL,%s,%s,%s,%s,%s,%s,%s)', (username, password, email, "user", str(public_key_x), str(public_key_y), str(public_key_comp)))
             mydb.commit()
-            msg = 'You have successfully registered! Your private key is:/n' + temp_private_key
+            msg = 'You have successfully registered! Your private key is:\n' + temp_private_key
     elif request.method == "POST":
         msg = 'Please fill the form'
     return render_template('signup.html', msg=msg)
@@ -315,28 +316,35 @@ def add_transaction():
     res = "The upcoming transaction is added to next block"
     if 'loggedin' in session:
         if request.method == "POST":
-            sender = request.form["sender"]
             receiver = request.form["receiver"]
             amount = request.form["amount"]
             private_key = request.form["private_key"]
-            msg = {'sender': sender, 'receiver': receiver, 'amount': amount}
             (temp_public_key_x, temp_public_key_y) = public_key_gen(private_key)
             cursor.execute(
                 'SELECT * FROM accounts WHERE id = %s', (session['id'],))
             account = cursor.fetchone()
-            if (sender and receiver and amount):
-                # checking if private key is true or not
-                if (str(temp_public_key_x) == account['public_key_x'] and str(temp_public_key_y) == account['public_key_y']):
-                    # adding signature to the transaction
-                    signature = signECDSAsecp256k1(
-                        msg, bitcoin.decode_privkey(private_key, 'hex'))
-                    index = blockchain.add_transaction(
-                        sender, receiver, amount, signature)
-                    res = f"This transaction will be added to Block {index}"
+            sender = account['public_key_comp']
+            cursor.execute(
+                'SELECT * FROM accounts WHERE username = %s', (receiver,))
+            rec_account = cursor.fetchone()
+            if (rec_account):
+                receiver = rec_account['public_key_comp']
+                msg = {'sender': sender, 'receiver': receiver, 'amount': amount}
+                if (sender and receiver and amount):
+                    # checking if private key is true or not
+                    if (str(temp_public_key_x) == account['public_key_x'] and str(temp_public_key_y) == account['public_key_y']):
+                        # adding signature to the transaction
+                        signature = signECDSAsecp256k1(
+                            msg, bitcoin.decode_privkey(private_key, 'hex'))
+                        index = blockchain.add_transaction(
+                            sender, receiver, amount, signature)
+                        res = f"This transaction will be added to Block {index}"
+                    else:
+                        res = "Incorrect private key!!!"
                 else:
-                    res = "Incorrect private key!!!"
+                    res = "Some elements of the transaction are missing"
             else:
-                res = "Some elements of the transaction are missing"
+                res = "Reciever Username Not found!!!"
         return render_template('addtransaction.html', response=res)
     else:
         return redirect(url_for('home'))
