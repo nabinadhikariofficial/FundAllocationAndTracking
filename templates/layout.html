@@ -7,25 +7,28 @@
     <link rel="stylesheet" href="{{url_for('static',filename="css/style.css")}}">
 </head>
 
-<body class="margin">
-    <ul class="n1">
-        <li class="n2"><a href="{{url_for('home')}}">
-                <font class="f1"><b>Home</b></font>
-            </a></li>
-        <li class="n2"><a href="{{url_for('add_transaction')}}">
-                <font class="f1"><b>Add Transaction</b></font>
-            </a></li>
-        <li class="n2"><a href="{{url_for('mine_block')}}">
-                <font class="f1"><b>Mine Block</b></font>
-            </a></li>
-        <li class="n2"><a href="{{url_for('get_chain')}}">
-                <font class="f1"><b>View Transaction</b></font>
-            </a></li>
-        <li class="n2"><a href="{{url_for('profile')}}">
-                <font class="f1"><b>Track Transaction</b></font>
-            </a></li>
-    </ul>
+<body>
+    <header>
+        <div class="container" id="container">
+          <div >
+            <a href="{{url_for('profile')}}">
+              <img src="\static\img\blockchain-logo.png" class="logo-box">
+            </a>
+          </div>
+          <nav>
+          <ul>
+            <li><a href="{{url_for('home')}}">Home</a></li>
+            <li><a href="{{url_for('add_transaction')}}">Add Transaction</a></li>
+            <li><a href="{{url_for('mine_block')}}">Mine BLock</a></li>
+            <li><a href="{{url_for('get_chain')}}">View Transaction</a></li>
+            <li><a href="{{url_for('profile')}}">Track Transaction</a></li>
+         </ul>
+        </nav>
+        </div>
+      </header>
+      
 </body>
+
 {% block content %}
 {% endblock %}
 
