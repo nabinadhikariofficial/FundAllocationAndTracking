@@ -34,6 +34,7 @@ class Blockchain:  # defining our blockchain class
         }
 
         self.transactions = []  # resseting the transaction lists
+        self.count = 1  # restting transaction count
         self.chain.append(block)
         return block
 
@@ -82,12 +83,13 @@ class Blockchain:  # defining our blockchain class
         return True
 
     def add_transaction(self, sender, receiver, amount, signature):
-        self.transactions.append({'sender': sender,
+        self.transactions.append({'index': self.count, 'sender': sender,
                                   'receiver': receiver,
                                   'amount': amount,
                                   'transaction_time': str(int(time.time())),
                                   'signature': signature})
         previous_block = self.get_previous_block()
+        self.count = self.count+1  # increasing count value in transaction
         return previous_block['index'] + 1
 
     def add_node(self, address):
