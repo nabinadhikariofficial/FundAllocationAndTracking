@@ -224,6 +224,7 @@ label > input[type="checkbox"]:checked + * {        /*Show password after clicki
   border-radius: 25px;
   width: 1000px;
   height: fit-content;
+  margin-top: 30px;
   margin-left: 10%;
   font-family: Calibri;
 }
@@ -235,3 +236,28 @@ label > input[type="checkbox"]:checked + * {        /*Show password after clicki
   padding-right: 15px;
 }
 /*Profile Information close*/
+@media screen and (max-width: 660px) {
+  .log{
+    margin-top: 25%;
+  }
+  .profile{
+    margin-top: 23%;
+  }
+
+}
+@media screen and (max-width: 550px) {
+  .log{
+    margin-top: 40%;
+  }
+  .profile{
+    margin-top: 43%;
+    width: 400px;
+  }
+  .button{
+    position: relative;
+    margin-top: -12%;
+    height: 20px;
+    background-color: #636363;
+  }
+
+}
