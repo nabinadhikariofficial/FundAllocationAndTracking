@@ -101,8 +101,7 @@ class Blockchain:  # defining our blockchain class
         longest_chain = None
         max_length = len(self.chain)
         for node in network:
-            response = requests.get(f"http://{node}/get_chain")
-            print(response)
+            response = requests.get(f"http://{node}/get_chain_only")
             if response.status_code == 200:
                 length = response.json()['len']
                 chain = response.json()['chain']
@@ -125,6 +124,7 @@ node_address = str(uuid4()).replace('-', '')
 # Creating a Blockchain
 blockchain = Blockchain()
 
+
 app.secret_key = 'key'
 
 # database connection details below
@@ -134,6 +134,10 @@ mydb = mysql.connector.connect(
     passwd="Gs92p421dOk7mNeL",
     database="login"
 )
+
+# host address and port
+host_add = '127.0.0.1'
+port_add = 5000
 
 # making cursor
 cursor = mydb.cursor(dictionary=True)
@@ -199,6 +203,9 @@ def home():
             session['id'] = account['id']
             # some work left here but done with dictcursor
             session['username'] = account['username']
+            # connect nodes and check for the longest chain
+            connect_node()
+            msg = replace_chain()
             # Redirect to profile page
             return redirect(url_for('profile'))
         else:
@@ -251,7 +258,9 @@ def signup():
 def mine_block():
     if 'loggedin' in session:
         if request.method == 'GET':
-            return render_template("mineblock.html")
+            connect_node()
+            msg = replace_chain()
+            return render_template("mineblock.html", msg=msg)
 
         elif request.method == 'POST':
             previous_block = blockchain.get_previous_block()
@@ -288,6 +297,14 @@ def logout():
     session.pop('username', None)
     # Redirect to login page
     return redirect(url_for('home'))
+
+
+@app.route('/get_chain_only', methods=['GET'])
+def get_chain_only():
+
+    response = {'chain': blockchain.chain,
+                'len': len(blockchain.chain)}
+    return response, 200
 
 
 @app.route('/get_chain', methods=['GET'])
@@ -356,33 +373,31 @@ def add_transaction():
 # Connecting new nodes
 
 
-@app.route('/connect_node', methods=['POST'])
 def connect_node():
-    json = request.get_json()
-    nodes = json.get('nodes')
-    if nodes is None:
-        return "No node", 400
-    for node in nodes:
+    with open("nodes.json",) as f:
+        nodes = json.load(f)
+    print(nodes)
+    for node in nodes['nodes']:
+        print(node)
+        if (urlparse(node).netloc[-4:] == port_add):
+            continue
         blockchain.add_node(node)
-    response = {'message': 'All the nodes are now connected. The Blockchain now contains the following nodes:',
-                'total_nodes': list(blockchain.nodes)}
-    return response, 201
+    return
 
 # Replacing the chain by the longest chain if needed
+# main chain replacing algorithm can be changed accorfing to the need
 
 
-@app.route('/replace_chain', methods=['GET'])
 def replace_chain():
+    response = {'message': ''}
     is_chain_replaced = blockchain.replace_chain()
     if is_chain_replaced:
-        response = {'message': 'The nodes had different chains so the chain was replaced by the longest one.',
-                    'new_chain': blockchain.chain}
+        response['message'] = "The nodes had different chains so the chain was replaced by the longest one."
     else:
-        response = {'message': 'All good. The chain is the largest one.',
-                    'actual_chain': blockchain.chain}
-    return response, 200
+        response['message'] = "All good. The chain is the largest one."
+    return response
 
 
 # Running the app
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host=host_add, port=port_add, debug=True)

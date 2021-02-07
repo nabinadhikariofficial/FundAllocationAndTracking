@@ -2,17 +2,14 @@
 {% block title %}
 Mine BLock{% endblock %}
 {% block content %}
-<div class="center">  
-    <h3>
-        Just a click away from mining the next block.
-    </h3>
-<form method="POST">
-  <button class="mineBlockButton" >Mine Block</button>
-</form>
-<p class="ep_mine">{{response}}</p>
+<div class="center">
+  <h3>
+    Just a click away from mining the next block.
+  </h3>
+  {{msg}}
+  <form method="POST">
+    <button class="mineBlockButton">Mine Block</button>
+  </form>
+  <p class="ep_mine">{{response}}</p>
 </div>
-
-
-
-
 {% endblock %}
