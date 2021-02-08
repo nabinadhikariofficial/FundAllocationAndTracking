@@ -2,7 +2,7 @@
 
 .log{                       /*div for login page*/
   position: absolute;
-  top: 63%;
+  top: 55%;
   left: 50%;
   background:white;
   width: 400px;
@@ -127,6 +127,20 @@ label > input[type="checkbox"]:checked + * {        /*Show password after clicki
   position: absolute;
   top: -50px;
   left: calc(50% - 50px);
+}
+.sucessful{
+  margin-top: 2%;
+  margin-right: 1%;
+  height: fit-content;
+  position: absolute;
+  right: 0px;
+  width: 400px;
+  word-wrap: break-word;
+  border-radius: 10px;
+  color:#003663;
+  font-weight: bold;
+  padding: 10px;
+  background-color:#6cc070;
 }
 /*Sign Up Finished*/
 /*Add Trasaction*/
@@ -260,4 +274,14 @@ label > input[type="checkbox"]:checked + * {        /*Show password after clicki
     background-color: #636363;
   }
 
+}
+.node_message{
+  margin: auto;
+  width: fit-content;
+  border-radius: 10px;
+  font-size: 20px;
+  color: rgb(21, 255, 0);
+  font-weight: bold;
+  padding-left: 20px;
+  padding-right: 20px;
 }

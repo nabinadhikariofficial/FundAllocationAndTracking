@@ -30,9 +30,16 @@
       <span class="underline"></span>
       <label class="ep" >Password</label>
     </div>
+    {% if "exists" in msg %}
     <div class="incorrect">
       {{msg}}
     </div>
+    {% endif %}
+    {% if "Invalid" in msg %}
+    <div class="incorrect">
+      {{msg}}
+    </div>
+    {% endif %}
     <div class="sh">
       <label>
         <input type="checkbox" name="checkbox" value="no" onclick="myFunction()">
@@ -45,4 +52,11 @@
     </div>
   </form>
 </div>
+{% if "successfully" in msg %}
+    <div class="sucessful">
+      <p style="color:white">{{msg[:55]}}</p>
+      <p>{{msg[55:]}}</p>
+      <p style="color:white">Copy this key for further transaction.</p>
+    </div>
+    {% endif %}
 {% endblock %}
