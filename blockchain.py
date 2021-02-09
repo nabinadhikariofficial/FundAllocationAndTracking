@@ -231,7 +231,7 @@ def signup():
         elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             msg = 'Invalid email address!'
         elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Username must contain only characters and numbers!'
+            msg = 'Invalid username. Must contain only characters and numbers!'
         elif not username or not password or not email:
             msg = 'Please fill out the form!'
         else:
@@ -248,7 +248,7 @@ def signup():
             cursor.execute(
                 'INSERT INTO accounts VALUES (NULL,%s,%s,%s,%s,%s,%s,%s)', (username, password, email, "user", str(public_key_x), str(public_key_y), str(public_key_comp)))
             mydb.commit()
-            msg = 'You have successfully registered! Your private key is:\n' + temp_private_key
+            msg = 'You have successfully registered!\n Your private key is:\n' + temp_private_key
     elif request.method == "POST":
         msg = 'Please fill the form'
     return render_template('signup.html', msg=msg)
@@ -363,7 +363,7 @@ def add_transaction():
                 else:
                     res = "Some elements of the transaction are missing"
             else:
-                res = "Reciever Username Not found!!!"
+                res = "Incorrect Reciever Username!!!"
         return render_template('addtransaction.html', response=res)
     else:
         return redirect(url_for('home'))
