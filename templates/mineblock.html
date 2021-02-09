@@ -6,11 +6,11 @@
     Just a click away from mining the next block.
   </h3>
   <div class="node_message">
-    {{msg['message']}}
+    {{response.message}}
   </div>
   <form method="POST">
     <button class="mineBlockButton">Mine Block</button>
   </form>
-  <p class="ep_mine">{{response}}</p>
+  <p class="ep_mine">{{response.blockinfo}}</p>
 </div>
 {% endblock %}

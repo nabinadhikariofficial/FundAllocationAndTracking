@@ -256,11 +256,13 @@ def signup():
 
 @app.route('/mine_block', methods=['GET', 'POST'])
 def mine_block():
+    response = {'message': '', 'blockinfo': ''}
     if 'loggedin' in session:
         if request.method == 'GET':
             connect_node()
-            msg = replace_chain()
-            return render_template("mineblock.html", msg=msg)
+            response = replace_chain()
+            print(response)
+            return render_template("mineblock.html", response=response)
 
         elif request.method == 'POST':
             previous_block = blockchain.get_previous_block()
@@ -270,9 +272,10 @@ def mine_block():
                 sender=node_address, receiver=session['username'], amount=1, signature="mined")
             proof = blockchain.proof_of_work(previous_hash)
             block = blockchain.create_block(proof, previous_hash)
-            resp = Markup(
+            response['blockinfo'] = Markup(
                 f"Congratulations! you just mined a block. <br> This transaction will be added to Block {block['index']} <br> Proof: {block['proof']} <br> Previous hash: {block['previous_hash']} <br> Timestamp: {block['timestamp']}")
-            return render_template("mineblock.html", response=resp)
+            print(response)
+            return render_template("mineblock.html", response=response)
     else:
         return redirect(url_for('home'))
 
@@ -376,9 +379,7 @@ def add_transaction():
 def connect_node():
     with open("nodes.json",) as f:
         nodes = json.load(f)
-    print(nodes)
     for node in nodes['nodes']:
-        print(node)
         if (urlparse(node).netloc[-4:] == port_add):
             continue
         blockchain.add_node(node)
@@ -389,7 +390,7 @@ def connect_node():
 
 
 def replace_chain():
-    response = {'message': ''}
+    response = {'message': '', 'blockinfo': ''}
     is_chain_replaced = blockchain.replace_chain()
     if is_chain_replaced:
         response['message'] = "The nodes had different chains so the chain was replaced by the longest one."
