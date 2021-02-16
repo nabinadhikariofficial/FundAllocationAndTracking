@@ -375,6 +375,16 @@ def add_transaction():
     else:
         return redirect(url_for('home'))
 
+
+@app.route('/track_transaction', methods=['POST', 'GET'])
+def track_transaction():
+    if 'loggedin' in session:
+        resp = 'response'
+        return render_template('tracktransaction.html', response=resp)
+    else:
+        return redirect(url_for('home'))
+
+
 # Decentralizing our Blockchain
 
 # Connecting new nodes

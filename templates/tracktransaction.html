@@ -1,4 +1,21 @@
 {% extends "layout.html" %}
 {% block title %}Track Transaction{% endblock %}
 {% block content %}
+<div class="mainDiv">
+    <h2>Search the transactions by searching the purpose </h2>
+   
+    <div class="log">
+        <img src="\static\img\transaction.png" class="signup_photo">
+        <h1>Track Transaction</h1>
+        <form method="POST">
+          <div class="text">
+            <input type="text" name="purpose" required>
+            <span class="underline"></span>
+            <label class="ep">Purpose</label>
+          </div>
+          
+          <input type="submit" name="submit" value="Track Transaction" class="login">
+          <div class="gap"></div>
+        </form>
+      </div>
 {% endblock %}
