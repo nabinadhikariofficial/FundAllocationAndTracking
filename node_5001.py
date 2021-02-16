@@ -363,7 +363,7 @@ def add_transaction():
                         signature = signECDSAsecp256k1(
                             msg, bitcoin.decode_privkey(private_key, 'hex'))
                         index = blockchain.add_transaction(
-                            sender, receiver, amount, signature)
+                            sender, receiver, amount, signature, purpose, detail)
                         res = f"This transaction will be added to Block {index}"
                     else:
                         res = "Incorrect private key!!!"
