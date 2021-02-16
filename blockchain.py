@@ -86,7 +86,7 @@ class Blockchain:  # defining our blockchain class
         self.transactions.append({'index': self.count, 'sender': sender,
                                   'receiver': receiver,
                                   'amount': amount,
-                                  'purpose': purpose,
+                                  'purpose': purpose.lower(),
                                   'detail': detail,
                                   'transaction_time': str(int(time.time())),
                                   'signature': signature})
@@ -157,7 +157,6 @@ def public_key_gen(temp_private_key):
 
 def sha3_256Hash(msg):
     msg = str(msg)
-    print("string msg:", msg)
     hashBytes = hashlib.sha3_256(msg.encode("utf8")).digest()
     return int.from_bytes(hashBytes, byteorder="big")
 
@@ -198,7 +197,6 @@ def home():
         # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
-        print(account)
         if account:
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
@@ -263,7 +261,6 @@ def mine_block():
         if request.method == 'GET':
             connect_node()
             response = replace_chain()
-            print(response)
             return render_template("mineblock.html", response=response)
 
         elif request.method == 'POST':
@@ -276,7 +273,6 @@ def mine_block():
             block = blockchain.create_block(proof, previous_hash)
             response['blockinfo'] = Markup(
                 f"Congratulations! you just mined a block. <br> This transaction will be added to Block {block['index']} <br> Proof: {block['proof']} <br> Previous hash: {block['previous_hash']} <br> Timestamp: {block['timestamp']}")
-            print(response)
             return render_template("mineblock.html", response=response)
     else:
         return redirect(url_for('home'))
@@ -379,13 +375,47 @@ def add_transaction():
 @app.route('/track_transaction', methods=['POST', 'GET'])
 def track_transaction():
     if 'loggedin' in session:
-        resp = 'response'
-        return render_template('tracktransaction.html', response=resp)
+        heading = ''
+        search_data = {'S.no': '', 'sender': '', 'receiver': '', 'amount': ''}
+        if request.method == "POST":
+            heading = ('S.no', 'Sender', 'Reciever', 'Amount')
+            search_key = request.form["search_key"]
+            search_data = search(search_key)
+        else:
+            pass
+        return render_template('tracktransaction.html', search_data=search_data, heading=heading)
     else:
         return redirect(url_for('home'))
 
-# Decentralizing our Blockchain
+# searching
 
+
+def search(search_key):
+    searched_data = []
+    count = 1
+    for blocks in blockchain.chain:
+        for transaction in blocks['transactions']:
+            if search_key.lower() in transaction['purpose']:
+                if (transaction['purpose'] == 'mining'):
+                    sender_name = transaction['sender']
+                    receiver_name = transaction['receiver']
+                else:
+                    cursor.execute(
+                        'SELECT * FROM accounts WHERE public_key_comp = %s', (transaction['sender'],))
+                    sen_account = cursor.fetchone()
+                    sender_name = sen_account['username']
+                    cursor.execute(
+                        'SELECT * FROM accounts WHERE public_key_comp = %s', (transaction['receiver'],))
+                    rev_account = cursor.fetchone()
+                    receiver_name = rev_account['username']
+                data = {'S.no': count, 'sender': sender_name,
+                        'receiver': receiver_name, 'amount': transaction['amount']}
+                searched_data.append(data)
+                count += 1
+    return searched_data
+
+
+# Decentralizing our Blockchain
 # Connecting new nodes
 
 

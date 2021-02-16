@@ -2,7 +2,7 @@
 {% block title %}Track Transaction{% endblock %}
 {% block content %}
 <div class="s130">
-  <form>
+  <form method="POST">
     <div class="inner-form">
       <div class="input-field first-wrap">
         <div class="svg-wrapper">
@@ -12,10 +12,10 @@
             </path>
           </svg>
         </div>
-        <input id="search" type="text" placeholder="What are you looking for?" />
+        <input name="search_key" type="text" placeholder="What are you looking for?" required>
       </div>
       <div class="input-field second-wrap">
-        <button class="btn-search" type="button">SEARCH</button>
+        <button class="btn-search">SEARCH</button>
       </div>
     </div>
     <span class="info">ex. (Fund allocation Purposes) Salary, Development ,etc </span>
@@ -25,37 +25,21 @@
   <table class="table-content">
     <thead>
       <tr>
-        <th>S.No.</th>
-        <th>Sender</th>
-        <th>Receiver</th>
-        <th>Amount</th>
+        <th>{{heading[0]}}</th>
+        <th>{{heading[1]}}</th>
+        <th>{{heading[2]}}</th>
+        <th>{{heading[3]}}</th>
       </tr>
     </thead>
     <tbody>
+      {% for element in search_data %}
       <tr>
-        <td>1</td>
-        <td>Nabin</td>
-        <td>Samundra</td>
-        <td>40000</td>
+        <td>{{element['S.no']}}</td>
+        <td>{{element.sender}}</td>
+        <td>{{element.receiver}}</td>
+        <td>{{element.amount}}</td>
       </tr>
-      <tr class="active-row">
-        <td>2</td>
-        <td>Abhinav</td>
-        <td>Om</td>
-        <td>20000</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Bipen</td>
-        <td>Nabin</td>
-        <td>10000</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td>Total</td>
-        <td>Total Amount Here</td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
