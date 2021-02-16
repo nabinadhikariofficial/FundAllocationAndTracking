@@ -82,10 +82,12 @@ class Blockchain:  # defining our blockchain class
             block_index += 1
         return True
 
-    def add_transaction(self, sender, receiver, amount, signature):
+    def add_transaction(self, sender, receiver, amount, signature, purpose, detail):
         self.transactions.append({'index': self.count, 'sender': sender,
                                   'receiver': receiver,
                                   'amount': amount,
+                                  'purpose': purpose,
+                                  'detail': detail,
                                   'transaction_time': str(int(time.time())),
                                   'signature': signature})
         previous_block = self.get_previous_block()
@@ -269,7 +271,7 @@ def mine_block():
             previous_hash = blockchain.hash(previous_block)
             # award for mining block
             blockchain.add_transaction(
-                sender=node_address, receiver=session['username'], amount=1, signature="mined")
+                sender=node_address, receiver=session['username'], amount=1, signature="mined", purpose="mining", detail="Amount got from the mining")
             proof = blockchain.proof_of_work(previous_hash)
             block = blockchain.create_block(proof, previous_hash)
             response['blockinfo'] = Markup(
@@ -341,6 +343,8 @@ def add_transaction():
             receiver = request.form["receiver"]
             amount = request.form["amount"]
             private_key = request.form["private_key"]
+            purpose = request.form["purpose"]
+            detail = request.form["detail"]
             (temp_public_key_x, temp_public_key_y) = public_key_gen(private_key)
             cursor.execute(
                 'SELECT * FROM accounts WHERE id = %s', (session['id'],))
@@ -352,7 +356,7 @@ def add_transaction():
             if (rec_account):
                 receiver = rec_account['public_key_comp']
                 msg = {'sender': sender, 'receiver': receiver, 'amount': amount}
-                if (sender and receiver and amount):
+                if (sender and receiver and amount and purpose and detail):
                     # checking if private key is true or not
                     if (str(temp_public_key_x) == account['public_key_x'] and str(temp_public_key_y) == account['public_key_y']):
                         # adding signature to the transaction

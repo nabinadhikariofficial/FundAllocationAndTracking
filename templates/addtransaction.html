@@ -19,22 +19,32 @@
     <div class="text">
       <input type="text" name="private_key" required>
       <span class="underline"></span>
-      <label class="ep">private_key<label>
+      <label class="ep">Private key:<label>
+    </div>
+    <div class="text">
+      <input type="text" name="purpose" required>
+      <span class="underline"></span>
+      <label class="ep">Purpose<label>
+    </div>
+    <div class="text">
+      <input type="text" name="detail" required>
+      <span class="underline"></span>
+      <label class="ep">Detail<label>
     </div>
     {% if "upcoming" in response %}
-      <div class="correct" style="color:#888888">
-        {{response}}
-      </div>
+    <div class="correct" style="color:#888888">
+      {{response}}
+    </div>
     {% endif %}
     {% if "this" in response %}
-      <div class="correct">
-        {{response}}
-      </div>
+    <div class="correct">
+      {{response}}
+    </div>
     {% endif %}
     {% if "Incorrect" in response %}
-      <div class="correct" style="color:#ff0000">
-        {{response}}
-      </div>
+    <div class="correct" style="color:#ff0000">
+      {{response}}
+    </div>
     {% endif %}
     <input type="submit" name="submit" value="Add Transaction" class="login">
     <div class="gap"></div>
