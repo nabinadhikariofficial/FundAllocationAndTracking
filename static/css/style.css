@@ -478,3 +478,54 @@ label > input[type="checkbox"]:checked + * {
     font-size: 13px;
   }
 }
+/*Search Bar closed*/
+
+
+/*Table for Track Transaction*/
+
+.track-table{
+  font-family: Calibri;
+  margin-left: 6%;
+  width: fit-content;
+  height: fit-content;
+}
+.table-content {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 17px;
+  min-width: 700px;
+  min-height: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.table-content thead tr {
+  background-color: #2691d9;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+}
+.table-content th,
+.table-content td {
+  padding: 12px 15px;
+}
+.table-content tbody tr {
+  border-bottom: 1px solid #dddddd;
+  transition:all .2s ease-in;
+  cursor: pointer;
+}
+
+.table-content tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table-content tbody tr:last-of-type {
+  font-weight: bold;
+  border-bottom: 2px solid #2691d9;
+}
+.table-content tbody tr:hover{
+  background-color: #f5f5f5;
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
