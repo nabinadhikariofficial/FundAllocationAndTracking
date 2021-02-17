@@ -550,3 +550,12 @@ label > input[type="checkbox"]:checked + * {
   width: 8%;
   height: 8%;
 }
+.plot{
+  margin-top: 4%;
+  position: absolute;
+  height: 300px;
+  cursor: pointer;
+  right: 5%;
+  width: 30%;
+  padding: 10px;
+}
