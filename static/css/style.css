@@ -480,10 +480,9 @@ label > input[type="checkbox"]:checked + * {
 }
 /*Search Bar closed*/
 
-
 /*Table for Track Transaction*/
 
-.track-table{
+.track-table {
   font-family: Calibri;
   margin-left: 6%;
   width: fit-content;
@@ -511,7 +510,7 @@ label > input[type="checkbox"]:checked + * {
 }
 .table-content tbody tr {
   border-bottom: 1px solid #dddddd;
-  transition:all .2s ease-in;
+  transition: all 0.2s ease-in;
   cursor: pointer;
 }
 
@@ -522,26 +521,26 @@ label > input[type="checkbox"]:checked + * {
 .table-content tbody tr:last-of-type {
   border-bottom: 2px solid #2691d9;
 }
-.table-content tbody tr:hover{
+.table-content tbody tr:hover {
   background-color: #f5f5f5;
   transform: scale(1.02);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 /*Table Close*/
 /*Search Type*/
-.allocation{
+.allocation {
   margin-top: 0.25%;
   text-align: center;
   font-size: 25px;
   color: #cccccc;
 }
-.not-found{
+.not-found {
   margin-top: 0%;
   text-align: center;
   font-size: 20px;
   color: #cccccc;
 }
-.search-photo img{
+.search-photo img {
   margin-top: 2%;
   margin-bottom: 1%;
   display: block;
@@ -550,12 +549,9 @@ label > input[type="checkbox"]:checked + * {
   width: 8%;
   height: 8%;
 }
-.plot{
-  margin-top: 4%;
+.plot {
+  margin-top: 0%;
   position: absolute;
-  height: 300px;
   cursor: pointer;
-  right: 5%;
-  width: 30%;
-  padding: 10px;
+  margin-left: 50%;
 }

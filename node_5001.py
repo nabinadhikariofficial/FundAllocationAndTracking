@@ -379,8 +379,11 @@ def add_transaction():
 def track_transaction():
     if 'loggedin' in session:
         heading = ''
-        search_data = {'S.no': '', 'sender': '',
-                       'receiver': '', 'amount': '', 'time': ''}
+        search_data = {'S.no': '',
+                       'sender': '',
+                       'receiver': '',
+                       'amount': '',
+                       'time': ''}
         if request.method == "POST":
             heading = ('S.no', 'Sender', 'Receiver', 'Amount', 'Time')
             search_key = request.form["search_key"]
@@ -389,18 +392,18 @@ def track_transaction():
             amount = []
             for data in search_data:
                 time.append(data['time'])
-                amount.append(data['amount'])
+                # data conversion as it is in string
+                amount.append(float(data['amount']))
             strFile = "static/img/plot.png"
             plt.style.use('seaborn')
             plt.xlabel('Time', fontsize=14)
             plt.ylabel('Amount', fontsize=14)
             plt.title('Transaction History', fontsize=14)
-            if os.path.isfile(strFile):
-                os.remove(strFile)  # for removing file if it exist
             plt.xticks(rotation='vertical', fontsize=8)
             plt.subplots_adjust(bottom=0.4)
             plt.plot(time, amount, color='green', marker='o')
             plt.savefig(strFile)
+            plt.close()
             if len(search_data) == 0:
                 heading = "Nodata"
         else:
