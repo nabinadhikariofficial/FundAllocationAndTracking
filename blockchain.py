@@ -390,14 +390,14 @@ def track_transaction():
             for data in search_data:
                 time.append(data['time'])
                 amount.append(data['amount'])
-            plt.plot(time, amount, color='green', marker='o')
-            plt.title('Transaction History', fontsize=14)
+            strFile = "static/img/plot.png"
+            plt.style.use('seaborn')
             plt.xlabel('Time', fontsize=14)
             plt.ylabel('Amount', fontsize=14)
-            plt.grid(True)
-            strFile = "static/img/plot.png"
+            plt.title('Transaction History', fontsize=14)
             if os.path.isfile(strFile):
                 os.remove(strFile)  # for removing file if it exist
+            plt.plot(time, amount, color='green', marker='o')
             plt.savefig(strFile)
             if len(search_data) == 0:
                 heading = "Nodata"
