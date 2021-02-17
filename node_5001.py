@@ -363,8 +363,6 @@ def add_transaction():
                         res = f"This transaction will be added to Block {index}"
                     else:
                         res = "Incorrect private key!!!"
-                else:
-                    res = "Some elements of the transaction are missing"
             else:
                 res = "Reciever Username Not found!!!"
         return render_template('addtransaction.html', response=res)
@@ -381,6 +379,8 @@ def track_transaction():
             heading = ('S.no', 'Sender', 'Reciever', 'Amount')
             search_key = request.form["search_key"]
             search_data = search(search_key)
+            if len(search_data) == 0:
+                heading = "Nodata"
         else:
             pass
         return render_template('tracktransaction.html', search_data=search_data, heading=heading)

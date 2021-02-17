@@ -41,7 +41,12 @@
       {{response}}
     </div>
     {% endif %}
-    {% if "Incorrect" or "missing" or "Username" in response %}
+    {% if "Incorrect" in response %}
+    <div class="correct" style="color:#ff0000">
+      {{response}}
+    </div>
+    {% endif %}
+    {% if "Not found" in response %}
     <div class="correct" style="color:#ff0000">
       {{response}}
     </div>
