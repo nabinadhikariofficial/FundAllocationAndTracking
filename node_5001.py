@@ -1,3 +1,5 @@
+import os
+import matplotlib.pyplot as plt  # for data visualization
 import time  # for timestamp
 import hashlib  # for hasing the block
 import json  # for json files work
@@ -10,6 +12,8 @@ import mysql.connector
 import re
 import bitcoin
 from pycoin.ecdsa import generator_secp256k1, sign, verify
+import matplotlib
+matplotlib.use('Agg')
 
 # Building a Blockchain
 
@@ -375,11 +379,27 @@ def add_transaction():
 def track_transaction():
     if 'loggedin' in session:
         heading = ''
-        search_data = {'S.no': '', 'sender': '', 'receiver': '', 'amount': ''}
+        search_data = {'S.no': '', 'sender': '',
+                       'receiver': '', 'amount': '', 'time': ''}
         if request.method == "POST":
-            heading = ('S.no', 'Sender', 'Reciever', 'Amount')
+            heading = ('S.no', 'Sender', 'Receiver', 'Amount', 'Time')
             search_key = request.form["search_key"]
             search_data = search(search_key)
+            time = []
+            amount = []
+            for data in search_data:
+                time.append(data['time'])
+                amount.append(data['amount'])
+            print(time)
+            print(amount)
+            plt.plot(time, amount)
+            plt.title('Transaction History')
+            plt.xlabel('Time')
+            plt.ylabel('Amount')
+            strFile = "static/img/plot.png"
+            if os.path.isfile(strFile):
+                os.remove(strFile)  # for removing file if it exist
+            plt.savefig(strFile)
             if len(search_data) == 0:
                 heading = "Nodata"
         else:
@@ -409,8 +429,11 @@ def search(search_key):
                         'SELECT * FROM accounts WHERE public_key_comp = %s', (transaction['receiver'],))
                     rev_account = cursor.fetchone()
                     receiver_name = rev_account['username']
-                data = {'S.no': count, 'sender': sender_name,
-                        'receiver': receiver_name, 'amount': transaction['amount']}
+                data = {'S.no': count,
+                        'sender': sender_name,
+                        'receiver': receiver_name,
+                        'amount': transaction['amount'],
+                        'time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(transaction['transaction_time'])))}  # epoch time coneversion is done
                 searched_data.append(data)
                 count += 1
     return searched_data

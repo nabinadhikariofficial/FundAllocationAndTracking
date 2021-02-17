@@ -33,6 +33,7 @@
         <th>{{heading[1]}}</th>
         <th>{{heading[2]}}</th>
         <th>{{heading[3]}}</th>
+        <th>{{heading[4]}}</th>
       </tr>
     </thead>
     <tbody>
@@ -42,18 +43,22 @@
         <td>{{element.sender}}</td>
         <td>{{element.receiver}}</td>
         <td>{{element.amount}}</td>
+        <th>{{element.time}}</th>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+<div class="search-photo">
+  <img src="\static\img\plot.png">
+</div>
 {% endif %}
 {% if heading=="Nodata" %}
-  <div class="search-photo">
-    <img src="\static\img\search.png">
-  </div>
-  <div class="not-found">
-      Sorry! No result found
-  </div>
+<div class="search-photo">
+  <img src="\static\img\search.png">
+</div>
+<div class="not-found">
+  Sorry! No result found
+</div>
 {% endif %}
 {% endblock %}
