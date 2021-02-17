@@ -397,6 +397,8 @@ def track_transaction():
             plt.title('Transaction History', fontsize=14)
             if os.path.isfile(strFile):
                 os.remove(strFile)  # for removing file if it exist
+            plt.xticks(rotation='vertical', fontsize=8)
+            plt.subplots_adjust(bottom=0.4)
             plt.plot(time, amount, color='green', marker='o')
             plt.savefig(strFile)
             if len(search_data) == 0:
