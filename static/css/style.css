@@ -494,7 +494,6 @@ label > input[type="checkbox"]:checked + * {
   margin: 25px 0;
   font-size: 17px;
   min-width: 700px;
-  min-height: 500px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -521,11 +520,33 @@ label > input[type="checkbox"]:checked + * {
 }
 
 .table-content tbody tr:last-of-type {
-  font-weight: bold;
   border-bottom: 2px solid #2691d9;
 }
 .table-content tbody tr:hover{
   background-color: #f5f5f5;
   transform: scale(1.02);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+/*Table Close*/
+/*Search Type*/
+.allocation{
+  margin-top: 0.25%;
+  text-align: center;
+  font-size: 25px;
+  color: #cccccc;
+}
+.not-found{
+  margin-top: 0%;
+  text-align: center;
+  font-size: 20px;
+  color: #cccccc;
+}
+.search-photo img{
+  margin-top: 2%;
+  margin-bottom: 1%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 8%;
+  height: 8%;
 }

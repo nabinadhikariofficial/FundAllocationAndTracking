@@ -381,6 +381,8 @@ def track_transaction():
             heading = ('S.no', 'Sender', 'Reciever', 'Amount')
             search_key = request.form["search_key"]
             search_data = search(search_key)
+            if len(search_data)==0:
+                heading= "Nodata"
         else:
             pass
         return render_template('tracktransaction.html', search_data=search_data, heading=heading)

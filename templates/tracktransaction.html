@@ -21,6 +21,10 @@
     <span class="info">ex. (Fund allocation Purposes) Salary, Development ,etc </span>
   </form>
 </div>
+{% if heading and heading!="Nodata" %}
+<div class="allocation">
+  ALLOCATION: <b style="color:black">{{ request.form["search_key"].title() }}</b>
+</div>
 <div class="track-table">
   <table class="table-content">
     <thead>
@@ -43,4 +47,13 @@
     </tbody>
   </table>
 </div>
+{% endif %}
+{% if heading=="Nodata" %}
+  <div class="search-photo">
+    <img src="\static\img\search.png">
+  </div>
+  <div class="not-found">
+      Sorry! No result found
+  </div>
+{% endif %}
 {% endblock %}
