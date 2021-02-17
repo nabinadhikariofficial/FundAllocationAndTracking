@@ -1,4 +1,3 @@
-import os
 import matplotlib.pyplot as plt  # for data visualization
 import time  # for timestamp
 import hashlib  # for hasing the block
@@ -384,14 +383,15 @@ def track_transaction():
                        'receiver': '',
                        'amount': '',
                        'time': ''}
+        loc = ""
         if request.method == "POST":
             heading = ('S.no', 'Sender', 'Receiver', 'Amount', 'Time')
             search_key = request.form["search_key"]
             search_data = search(search_key)
-            time = []
+            time_data = []
             amount = []
             for data in search_data:
-                time.append(data['time'])
+                time_data.append(data['time'])
                 # data conversion as it is in string
                 amount.append(float(data['amount']))
             strFile = "static/img/plot.png"
@@ -401,14 +401,16 @@ def track_transaction():
             plt.title('Transaction History', fontsize=14)
             plt.xticks(rotation='vertical', fontsize=8)
             plt.subplots_adjust(bottom=0.4)
-            plt.plot(time, amount, color='green', marker='o')
+            plt.plot(time_data, amount, color='green', marker='o')
             plt.savefig(strFile)
             plt.close()
+            loc = "\static\img\plot.png?"+str(int(time.time()))
+            print(loc)
             if len(search_data) == 0:
                 heading = "Nodata"
         else:
             pass
-        return render_template('tracktransaction.html', search_data=search_data, heading=heading)
+        return render_template('tracktransaction.html', search_data=search_data, heading=heading, loc=loc)
     else:
         return redirect(url_for('home'))
 
