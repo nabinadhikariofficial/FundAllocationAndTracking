@@ -390,12 +390,11 @@ def track_transaction():
             for data in search_data:
                 time.append(data['time'])
                 amount.append(data['amount'])
-            print(time)
-            print(amount)
-            plt.plot(time, amount)
-            plt.title('Transaction History')
-            plt.xlabel('Time')
-            plt.ylabel('Amount')
+            plt.plot(time, amount, color='green', marker='o')
+            plt.title('Transaction History', fontsize=14)
+            plt.xlabel('Time', fontsize=14)
+            plt.ylabel('Amount', fontsize=14)
+            plt.grid(True)
             strFile = "static/img/plot.png"
             if os.path.isfile(strFile):
                 os.remove(strFile)  # for removing file if it exist
