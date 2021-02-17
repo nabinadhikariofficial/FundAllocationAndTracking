@@ -5,6 +5,7 @@ from flask import Flask, request, render_template, jsonify, Markup, session, red
 import requests  # for requesting webpages
 from uuid import uuid4  # for unique address  of the node
 from urllib.parse import urlparse  # for parsing url
+from datetime import timedelta  # for time difference
 import mysql.connector
 import re
 import bitcoin
@@ -118,16 +119,15 @@ class Blockchain:  # defining our blockchain class
 
 # Creating a Web App
 app = Flask(__name__)
-
+app.secret_key = 'key'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(
+    minutes=2)  # session logout after 2 minutes of idle case
 
 # Creating an address for the node on the given port
 node_address = str(uuid4()).replace('-', '')
 
 # Creating a Blockchain
 blockchain = Blockchain()
-
-
-app.secret_key = 'key'
 
 # database connection details below
 mydb = mysql.connector.connect(
@@ -199,6 +199,7 @@ def home():
         # If account exists in accounts table in out database
         if account:
             # Create session data, we can access this data in other routes
+            session.permanent = True
             session['loggedin'] = True
             session['id'] = account['id']
             # some work left here but done with dictcursor
