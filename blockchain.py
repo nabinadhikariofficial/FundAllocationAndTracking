@@ -384,6 +384,7 @@ def track_transaction():
                        'amount': '',
                        'time': ''}
         loc = ""
+        fund = {'allocated': 0.0, 'spended': 0.0}
         if request.method == "POST":
             heading = ('S.no', 'Sender', 'Receiver', 'Amount', 'Time')
             search_key = request.form["search_key"]
@@ -391,6 +392,10 @@ def track_transaction():
             time_data = []
             amount = []
             for data in search_data:
+                if (data['sender'] == data['receiver']):
+                    fund['allocated'] = fund['allocated']+float(data['amount'])
+                else:
+                    fund['spended'] = fund['spended']+float(data['amount'])
                 time_data.append(data['time'])
                 # data conversion as it is in string
                 amount.append(float(data['amount']))
@@ -405,12 +410,11 @@ def track_transaction():
             plt.savefig(strFile)
             plt.close()
             loc = "\static\img\plot.png?"+str(int(time.time()))
-            print(loc)
             if len(search_data) == 0:
                 heading = "Nodata"
         else:
             pass
-        return render_template('tracktransaction.html', search_data=search_data, heading=heading, loc=loc)
+        return render_template('tracktransaction.html', search_data=search_data, heading=heading, loc=loc, fund=fund)
     else:
         return redirect(url_for('home'))
 

@@ -24,6 +24,9 @@
 {% if heading and heading!="Nodata" %}
 <div class="allocation">
   ALLOCATION: <b style="color:black">{{ request.form["search_key"].title() }}</b>
+  &nbsp;&nbsp;Total fund : <b style="color:black">{{fund.allocated}}</b>
+  &nbsp;&nbsp;Spended fund :<b style="color:black">{{fund.spended}}</b>
+  &nbsp;&nbsp;Remaining fund:<b style="color:black">{{fund.allocated-fund.spended}}</b>
 </div>
 <div class="plot">
   <img src={{loc}}>
